@@ -1,0 +1,35 @@
+body {
+    margin: 0px;
+}
+
+.topBarDiv {
+    background-color: #adec39;
+    margin: 0px 0px 20px 0px;
+    padding: 20px;
+    box-shadow: 0px 10px 5px grey;
+}
+
+.pokemonDiv {
+    float: left;
+    margin: 24px;
+}
+
+.topBarGenButton {
+    background-color: #adec39;
+    border-left-color: #89ba2d; 
+    border-top-color: #89ba2d; 
+    border-right-color: #638720;
+    border-bottom-color: #638720;
+    border-radius: 5px;
+    padding: 5px;
+    flex: 100%;
+}
+
+.flex {
+    display: flex;
+}
+
+.tempPokeNameButton {
+    padding: 8px;
+    width: 100px;
+}

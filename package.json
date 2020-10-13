@@ -1,0 +1,51 @@
+{
+  "name": "3sc frontend task",
+  "version": "1.0.0",
+  "description": "Building a simple web UI for PokeAPI for the 3 Sided Cube frontend task",
+  "main": "index.js",
+  "config": {
+    "port": "8080"
+  },
+  "scripts": {
+    "test": "echo \"No test specified.\" && exit 1",
+    "build": "webpack --config wp.config.js",
+    "dev": "if [ ! -z \"$npm_config_port\" ]; then webpack-dev-server --config wp.config.js --mode development --port $npm_config_port; else npm run dev --port=$npm_package_config_port; fi"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JR-Mitchell/3sc-frontend-task.git"
+  },
+  "keywords": [
+    "webpack",
+    "babel",
+    "react",
+    "typescript",
+    "pokemon"
+  ],
+  "author": "JR-Mitchell",
+  "license": "None",
+  "bugs": {
+    "url": "https://github.com/JR-Mitchell/3sc-frontend-task/issues"
+  },
+  "homepage": "https://github.com/JR-Mitchell/3sc-frontend-task#readme",
+  "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/preset-react": "^7.10.4",
+    "@types/react": "^16.9.52",
+    "@types/react-dom": "^16.9.8",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^4.3.0",
+    "html-webpack-plugin": "^4.3.0",
+    "style-loader": "^2.0.0",
+    "ts-loader": "^8.0.3",
+    "typescript": "^4.0.2",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
