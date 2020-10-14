@@ -47,7 +47,7 @@ class App extends React.Component<{},AppState> {
      */
     constructor(props) {
         super(props);
-        this.state = {species:{},pokemon:[]};
+        this.state = {species:{},pokemon:[],bodyPos:" right"};
     }
 
     /**

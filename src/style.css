@@ -1,3 +1,4 @@
+/* Main element helpers */
 body {
     margin: 0px;
 }
@@ -94,15 +95,25 @@ body {
     background-color: #adec39;
 }
 
-.pokemonDiv {
+.speciesCard {
     float: left;
     margin: 6px;
     padding: 6px;
     border: 2px;
-    border-color: black;
+    border-left-color: #89ba2d; 
+    border-top-color: #89ba2d; 
+    border-right-color: #638720;
+    border-bottom-color: #638720;
+    border-radius: 5px;
     border-style: solid;
-    display: flex;
-    align-items: center;
+}
+
+.speciesTitle {
+    margin: 6px;
+}
+
+.speciesInfo {
+    margin: 6px;
 }
 
 .flex {
@@ -118,8 +129,157 @@ body {
     overflow: hidden;
 }
 
+.speciesMoreButton {
+    border-radius: 5px;
+    padding: auto;
+}
+
 .spritePlaceholder {
     width: 68px;
     height: 56px;
-    float: right;
+}
+
+.overlayOuter {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.overlayInner {
+    position: fixed;
+    left: 10%;
+    top: 10%;
+    z-index: 2;
+    width: 80%;
+    height: 80%;
+    background-color: white;
+    box-shadow: 0px 0px 50px 50px rgba(0,0,0,0.8);
+    border-left-color: #89ba2d; 
+    border-top-color: #89ba2d; 
+    border-right-color: #638720;
+    border-bottom-color: #638720;
+    border-radius: 5px;
+    border-style: solid;
+    padding: 12px;
+}
+
+.overlayCloseButton {
+    position: fixed;
+    left: calc(90vw + 5px);
+    top: calc(10% - 10px);
+    z-index: 3;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background-color: red;
+    border-left-color: #bb0000;
+    border-top-color: #bb0000;
+}
+
+.typeIcon {
+    color: white;
+    padding: 1px;
+    border: 2px;
+    border-style: solid;
+    border-radius: 2px;
+    text-align: center;
+}
+
+/* Colour helpers for types */
+.typeColourNormal {
+    background-color: #a8a878;
+    border-color: #6d6d4e;
+}
+
+.typeColourFire {
+    background-color: #f08030;
+    border-color: #9c531f;
+}
+
+.typeColourFighting {
+    background-color: #c03028;
+    border-color: #7d1f1a;
+}
+
+.typeColourWater {
+    background-color: #6890f0;
+    border-color: #445e9c;
+}
+
+.typeColourFlying {
+    background-color: #a890f0;
+    border-color: #6d5e9c;
+}
+
+.typeColourGrass {
+    background-color: #78c850;
+    border-color: #4e8234;
+}
+
+.typeColourPoison {
+    background-color: #a040a0;
+    border-color: #682a68;
+}
+
+.typeColourElectric {
+    background-color: #f8d830;
+    border-color: #a1871f;
+}
+
+.typeColourGround {
+    background-color: #a8a878;
+    border-color: #6d6d4e;
+}
+
+.typeColourPsychic {
+    background-color: #f85888;
+    border-color: #a13959;
+}
+
+.typeColourRock {
+    background-color: #b8a038;
+    border-color: #786824;
+}
+
+.typeColourIce {
+    background-color: #98d8d8;
+    border-color: #638d8d;
+}
+
+.typeColourBug {
+    background-color: #a8b820;
+    border-color: #6d7815;
+}
+
+.typeColourDragon {
+    background-color: #7038f8;
+    border-color: #4924a1;
+}
+
+.typeColourGhost {
+    background-color: #705898;
+    border-color: #493963;
+}
+
+.typeColourDark {
+    background-color: #705848;
+    border-color: #49392f;
+}
+
+.typeColourSteel {
+    background-color: #b8b8d0;
+    border-color: #787887;
+}
+
+.typeColourFairy {
+    background-color: #ee99ac;
+    border-color: #9B6470;
+}
+
+.typeColourUnknown {
+    background-color: #68a090;
+    border-color: #44685e;
 }
