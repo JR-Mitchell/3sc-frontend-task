@@ -8,6 +8,9 @@ import axios from 'axios';
 import type { SpeciesInterface } from 'utils/Species';
 import type { ReferenceInterface } from 'utils/Reference';
 
+//Imports from local 'views'
+import Info from 'views/SpeciesInfo';
+
 /**
  * Interface for the props of the Species component
  */
@@ -30,6 +33,10 @@ interface SpeciesState {
      * URL to sprite
      */
     spriteUrl?: string
+    /**
+     * The info element to display about this species
+     */
+    info?: React.ReactNode
 }
 
 /**
@@ -65,6 +72,7 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
     render() {
         let species = {...this.state.species};
         let sprAddress = this.state.spriteUrl;
+        let info = this.state.info;
 
         //Make name proper case
         let name: string = species?.name || this.props.reference.name;
@@ -86,8 +94,9 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
 
         name = num ? "#" + num.toString() + " " + name: name;
 
-        return <div className="pokemonDiv" draggable>
-            <h4>{name}</h4>
+        return <div className="speciesCard" draggable>
+            <h4 className="speciesTitle">{name}</h4>
+            <div>
             {sprAddress
                 ? <img
                     src={sprAddress}
@@ -95,7 +104,54 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
                     draggable={false}
                 />
                 : <div className="spritePlaceholder" />}
+            <button className="speciesMoreButton" onClick={()=>{
+                this.infoOpen();
+            }}>
+                Info
+            </button>
+            </div>
+            {info}
         </div>
+    }
+
+    /**
+     * Callback when info is opened
+     */
+    infoOpen() {
+        let species = {...this.state.species};
+        if (species) {
+            this.setState({
+                info:<Info
+                    species={species}
+                    closeCallback={()=>{this.infoClose();}}
+                />
+            });
+        } else {
+            axios.get<SpeciesInterface>(
+                this.props.reference.url
+            ).then((response)=>{
+                this.setState((state,props)=>({
+                    info:<Info
+                        species={response.data}
+                        closeCallback={()=>{this.infoClose();}}
+                    />,
+                    species: response.data,
+                    spriteUrl: "https://raw.githubusercontent.com/PokeAPI/"
+                        + "sprites/master/sprites/pokemon/"
+                        + "versions/generation-viii/icons/"
+                        + response.data.id.toString() + ".png"
+                }));
+            });
+        }
+    }
+
+    /**
+     * Callback when info is closed
+     */
+    infoClose() {
+        this.setState({
+            info:undefined
+        });
     }
 }
 
