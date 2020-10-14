@@ -96,18 +96,30 @@ body {
 
 .pokemonDiv {
     float: left;
-    margin: 18px;
+    margin: 6px;
     padding: 6px;
     border: 2px;
     border-color: black;
     border-style: solid;
+    display: flex;
+    align-items: center;
 }
 
 .flex {
     display: flex;
 }
 
-.tempPokeNameButton {
-    padding: 8px;
-    width: 100px;
+.speciesListAlphaTitle {
+    width: 100%;
+    padding: 12px;
+}
+
+.speciesListAlphaDiv {
+    overflow: hidden;
+}
+
+.spritePlaceholder {
+    width: 40px;
+    height: 30px;
+    float: right;
 }
