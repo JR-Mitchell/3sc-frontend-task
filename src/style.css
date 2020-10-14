@@ -36,6 +36,26 @@ body {
     width: 20%;
 }
 
+.menuBarContents {
+    background-color: white;
+    margin: 2% 10% 2% 10%;
+    width: 80%;
+    border-radius: 2px;
+}
+
+.menuBarLink {
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    text-overflow: clip;
+}
+
+.menuBarLink.active.right {
+    border-width: 0px 0px 0px 2px;
+    border-left-color: black;
+    border-style: solid;
+}
+
 .menuBarGenButton {
     background-color: #adec39;
     border-left-color: #89ba2d; 

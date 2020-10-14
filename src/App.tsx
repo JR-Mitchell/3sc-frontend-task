@@ -25,11 +25,15 @@ interface AppState {
      * An object of alphabetised reference lists to pokemon species
      * for the selected generation
      */
-    species: ReferenceInterface[],
+    species: {[key:string]:ReferenceInterface[]}
     /**
      * String identifier for the position of the main body
      */
     bodyPos?: string
+    /**
+     * Names of sections to scroll link to
+     */
+    scrollSections: string[]
 }
 
 /**
@@ -43,7 +47,11 @@ class App extends React.Component<{},AppState> {
      */
     constructor(props) {
         super(props);
-        this.state = {species:[],bodyPos:" right"};
+        this.state = {
+            species:{},
+            bodyPos:" right",
+            scrollSections: []
+        };
     }
 
     /**
@@ -51,8 +59,12 @@ class App extends React.Component<{},AppState> {
      */
     render() {
         //Making copies of state variables
-        let species = this.state.species.slice();
+        let species: {[key:string]:ReferenceInterface[]} = {};
+        Object.entries(this.state.species).forEach((item)=>{
+            species[item[0]] = item[1].slice();
+        })
         let bodyPos = this.state.bodyPos || "";
+        let scrollSections = this.state.scrollSections;
 
         return <>
             <MenuBar
@@ -60,6 +72,7 @@ class App extends React.Component<{},AppState> {
                 generationCallback={(species:ReferenceInterface[])=>{
                     this.selectGeneration(species);
                 }}
+                scrollSections={scrollSections}
             />
             <div className={"mainBody"+bodyPos}>
                 <TopBar
@@ -68,7 +81,9 @@ class App extends React.Component<{},AppState> {
                         this.setState({bodyPos:newPos});
                     }}
                 />
-                <PokeList species={species}/>
+                <PokeList
+                    species={species}
+                />
             </div>
         </>
     }
@@ -78,7 +93,27 @@ class App extends React.Component<{},AppState> {
      * Takes a list of references and alphabetises
      */
     selectGeneration(species:ReferenceInterface[]) {
-        this.setState({species:species});
+        // Alphabetically deal with species
+        let alphabetisedSpecies: {[key: string]:ReferenceInterface[]} = {};
+        let validCharacters: string[] = [];
+        for (let i=0; i<species.length; i++) {
+            let item = species[i];
+            let firstChar = item.name.charAt(0);
+            if (alphabetisedSpecies.hasOwnProperty(firstChar)) {
+                alphabetisedSpecies[firstChar].push(item);
+            } else {
+                alphabetisedSpecies[firstChar] = [item];
+                validCharacters.push(firstChar);
+            }
+        }
+
+        //Sort valid characters
+        validCharacters.sort();
+
+        this.setState({
+            species:alphabetisedSpecies,
+            scrollSections:validCharacters
+        });
     }
 }
 

@@ -1,8 +1,12 @@
 //Import from external 'react' module
 import React from 'react';
+import { Fragment } from 'react';
 
 //Import from external 'axios' module
 import axios from 'axios';
+
+//Import from external 'react-scroll' module
+import { Link } from 'react-scroll';
 
 //Imports from local 'utils'
 import type { GenerationInterface } from 'utils/Generation';
@@ -23,6 +27,10 @@ interface MenuBarProps {
      * Callback for the generation buttons
      */
     generationCallback: (pokemon: ReferenceInterface[]) => void
+    /**
+     * Name of scroll sections to create links for
+     */
+    scrollSections: string[]
 }
 
 /**
@@ -33,6 +41,10 @@ interface MenuBarState {
      * Array containing information about each generation
      */
     generations: GenerationInterface[]
+    /**
+     * The currently selected generation, if any
+     */
+    currGen?: number
 }
 
 /**
@@ -61,24 +73,46 @@ class MenuBar extends React.Component<MenuBarProps,MenuBarState> {
     render() {
         const pos = this.props.pos;
         const generations = this.state.generations.slice();
+        const currGen = this.state.currGen;
 
         return <div className={"menuBarDiv"+pos}>
             <h3 className={"menuBarTitle"+pos}>Pokemon by Generation</h3>
             {
-                generations.map((item)=>{
+                generations.map((item,index)=>{
                     item.pokemon_species.sort((a,b)=>{
                         return a.name < b.name ? -1 : 1;
                     });
-                    return <BarButton
-                        gen={item}
-                        key={item.name}
-                        callback={()=>{
-                            this.props.generationCallback(
-                                item.pokemon_species
-                            );
-                        }}
-                        pos={pos}
-                    />
+                    return <Fragment key={item.name}>
+                        <BarButton
+                            gen={item}
+                            callback={()=>{
+                                this.props.generationCallback(
+                                    item.pokemon_species
+                                );
+                                this.setState({currGen:index})
+                            }}
+                            pos={pos}
+                        />
+                        {index===currGen &&
+                            <div className={"menuBarContents"+pos}>
+                            {this.props.scrollSections.map((name)=>{
+                                return <Link
+                                    to={"AlphaElem-"+name}
+                                    key={name}
+                                    className={"menuBarLink"+pos}
+                                    activeClass={"menuBarLink active"+pos}
+                                    spy={true}
+                                    smooth={true}
+                                    duration={(dist)=>{
+                                        return 0.45*Math.abs(dist);
+                                    }}
+                                >
+                                    {name.toUpperCase()}
+                                </Link>
+                            })}
+                        </div>
+                        }
+                    </Fragment>
                 })
             }
         </div>

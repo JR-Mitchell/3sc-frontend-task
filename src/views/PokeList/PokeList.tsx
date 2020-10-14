@@ -4,6 +4,9 @@ import React from 'react';
 //Import from external 'axios' module
 import axios from 'axios';
 
+//Import from external 'react-scroll' module
+import { Element } from 'react-scroll';
+
 //Imports from local 'utils'
 import type { ReferenceInterface } from 'utils/Reference';
 
@@ -18,9 +21,11 @@ import 'style.css';
  */
 interface ListProps {
     /**
-     * References for each of the species to list
+     * An object of reference lists to pokemon species
+     * to show, broken into scrollable sections
+     * identified by their key
      */
-    species: ReferenceInterface[]
+    species: {[key:string]:ReferenceInterface[]}
     /**
      * Optional title to show above all entries
      */
@@ -28,27 +33,14 @@ interface ListProps {
 }
 
 function PokeList(props:ListProps){
-    // Alphabetically deal with species
-    let alphabetisedSpecies: {[key: string]:ReferenceInterface[]} = {};
-    for (let i=0; i<props.species.length; i++) {
-        let item = props.species[i];
-        let firstChar = item.name.charAt(0);
-        if (alphabetisedSpecies.hasOwnProperty(firstChar)) {
-            alphabetisedSpecies[firstChar].push(item);
-        } else {
-            alphabetisedSpecies[firstChar] = [item];
-        }
-    }
-
     return <>
         {props.title && <h1>{props.title}</h1>}
-        {Object.entries(alphabetisedSpecies).map((item)=>{
+        {Object.entries(props.species).map((item)=>{
             /** Set of pokemon species for this letter **/
             let char = item[0];
             let speciesList = item[1];
-            return <div key={"AlphaOuter"+char}>
+            return <Element key={"AlphaOuter"+char} name={"AlphaElem-"+char}>
                 <h3
-                    key={"AlphaTitle"+char}
                     className="speciesListAlphaTitle"
                 >
                     {char.toUpperCase()}
@@ -64,7 +56,7 @@ function PokeList(props:ListProps){
                         />
                     })}
                 </div>
-            </div>
+            </Element>
         })}
     </>
 }
