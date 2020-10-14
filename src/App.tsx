@@ -22,7 +22,8 @@ import 'style.css';
  */
 interface AppState {
     /**
-     * An object of alphabetised reference lists to pokemon species for the selected generation
+     * An object of alphabetised reference lists to pokemon species
+     * for the selected generation
      */
     species: {[key:string]:ReferenceInterface[]},
     /**

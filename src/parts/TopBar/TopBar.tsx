@@ -25,7 +25,10 @@ interface TopBarProps {
 function TopBar(props:TopBarProps) {
     return <div className="topBarDiv">
         <h1>
-            <button className="topBarMenuIcon" onClick={()=>{props.menuCallback();}}>
+            <button
+                className="topBarMenuIcon"
+                onClick={()=>{props.menuCallback();}}
+            >
                 <div className="topBarMenuIconInner" />
                 <div className="topBarMenuIconInner" />
                 <div className="topBarMenuIconInner" />

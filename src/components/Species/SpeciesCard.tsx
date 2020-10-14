@@ -53,7 +53,7 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
                 species: response.data,
                 spriteUrl: "https://raw.githubusercontent.com/PokeAPI/"
                     + "sprites/master/sprites/pokemon/"
-                    + "versions/generation-vii/icons/"
+                    + "versions/generation-viii/icons/"
                     + response.data.id.toString() + ".png"
             }));
         });
@@ -69,6 +69,22 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
         //Make name proper case
         let name: string = species?.name || this.props.reference.name;
         name = name.charAt(0).toUpperCase() + name.substr(1);
+
+        //Find localised name if possible
+        let locname: string | undefined = species?.names
+            ?.filter((item)=>
+                item.language.name === "en"
+            )?.[0]?.name;
+
+        name = locname || name;
+
+        //Add pokedex number
+        let num: number | undefined = species?.pokedex_numbers
+            ?.filter((item)=>
+                item.pokedex.name === "national"
+            )?.[0]?.entry_number;
+
+        name = num ? "#" + num.toString() + " " + name: name;
 
         return <div className="pokemonDiv" draggable>
             <h4>{name}</h4>

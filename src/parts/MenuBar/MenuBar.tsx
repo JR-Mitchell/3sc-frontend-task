@@ -73,7 +73,9 @@ class MenuBar extends React.Component<MenuBarProps,MenuBarState> {
                         gen={item}
                         key={item.name}
                         callback={()=>{
-                            this.props.generationCallback(item.pokemon_species);
+                            this.props.generationCallback(
+                                item.pokemon_species
+                            );
                         }}
                         pos={pos}
                     />
