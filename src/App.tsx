@@ -12,6 +12,7 @@ import type { PokemonInterface } from 'utils/Pokemon';
 //Imports from local 'components'
 import Pokemon from 'components/Pokemon';
 import TopBar from 'parts/TopBar';
+import MenuBar from 'parts/MenuBar';
 
 //Import stylesheet
 import 'style.css';
@@ -27,7 +28,11 @@ interface AppState {
     /**
      * A list of pokemon for the selected pokemon species
      */
-    pokemon: PokemonInterface[]
+    pokemon: PokemonInterface[],
+    /**
+     * String identifier for the position of the main body
+     */
+    bodyPos?: string
 }
 
 /**
@@ -51,32 +56,42 @@ class App extends React.Component<{},AppState> {
         //Making copies of state variables
         let species = this.state.species.slice();
         let pokemon = this.state.pokemon.slice();
+        let bodyPos = this.state.bodyPos || "";
 
         return <>
-            <TopBar
-                callback={(species:ReferenceInterface[])=>{
-                    this.setState({species:species,pokemon:[]});}
-                }
+            <MenuBar
+                pos={bodyPos}
+                generationCallback={(species:ReferenceInterface[])=>{
+                    this.setState({species:species,pokemon:[]});
+                }}
             />
-            {
-                /** Buttons for all pokemon in the generation **/
-                species.map((item)=>{
-                    return <button
-                        className="tempPokeNameButton"
-                        key={item.name}
-                        onClick={(()=>{this.selectSpecies(item);})}
-                    >
-                        {item.name}
-                    </button>
-                })
-            }
-            <br />
-            {
-                /** Data display for each pokemon in species **/
-                pokemon.map((item)=>{
-                    return <Pokemon key={item.name} data={item} />
-                })
-            }
+            <div className={"mainBody"+bodyPos}>
+                <TopBar
+                    menuCallback={()=>{
+                        let newPos = bodyPos === "" ? " right" : "";
+                        this.setState({bodyPos:newPos});
+                    }}
+                />
+                {
+                    /** Buttons for all pokemon in the generation **/
+                    species.map((item)=>{
+                        return <button
+                            className="tempPokeNameButton"
+                            key={item.name}
+                            onClick={(()=>{this.selectSpecies(item);})}
+                        >
+                            {item.name}
+                        </button>
+                    })
+                }
+                <br />
+                {
+                    /** Data display for each pokemon in species **/
+                    pokemon.map((item)=>{
+                        return <Pokemon key={item.name} data={item} />
+                    })
+                }
+            </div>
         </>
     }
 

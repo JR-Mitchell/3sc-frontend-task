@@ -1,5 +1,5 @@
 {
-  "name": "3sc frontend task",
+  "name": "3sc-frontend-task",
   "version": "1.0.0",
   "description": "Building a simple web UI for PokeAPI for the 3 Sided Cube frontend task",
   "main": "index.js",

@@ -2,6 +2,72 @@ body {
     margin: 0px;
 }
 
+.mainBody {
+    float:left;
+    width: 100%;
+    transition: width 1s, margin-left 1s;
+}
+
+.mainBody.left {
+    width: 80%;
+}
+
+.mainBody.right {
+    width: 80%;
+}
+
+.mainBody.middle {
+    width: 60%;
+    margin-left: 20%;
+}
+
+.menuBarDiv {
+    background-color: grey;
+    float:left;
+    width: 0%;
+    height: 100vh;
+    transition: width 1s, margin-left 1s;
+}
+
+.menuBarDiv.right {
+    width: 20%;
+}
+
+.menuBarGenButton {
+    background-color: #adec39;
+    border-left-color: #89ba2d; 
+    border-top-color: #89ba2d; 
+    border-right-color: #638720;
+    border-bottom-color: #638720;
+    border-radius: 5px;
+    padding: 0px;
+    border-width: 0px;
+    margin: 2% 10% 2% 10%;
+    width: 80%;
+    overflow: hidden;
+    text-overflow: clip;
+    transition: border-width 0s padding 0s;
+    transition-delay: 0.5s;
+}
+
+.menuBarGenButton.right {
+    padding: 1px 6px;
+    border-width: 2px;
+    transition-delay: 0s;
+}
+
+.menuBarTitle {
+    overflow: hidden;
+    text-overflow: clip;
+    width: 80%;
+    margin: 2% 10% 2% 10%;
+    white-space: nowrap;
+}
+
+.menuBarTitle.right {
+    white-space: normal;
+}
+
 .topBarDiv {
     background-color: #adec39;
     margin: 0px 0px 20px 0px;
@@ -9,20 +75,29 @@ body {
     box-shadow: 0px 10px 5px grey;
 }
 
-.pokemonDiv {
-    float: left;
-    margin: 24px;
+.topBarMenuIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    margin-right: 20px;
+    background-color: black;
 }
 
-.topBarGenButton {
+.topBarMenuIconInner {
+    width: 0px;
+    height: 0px;
+    padding: 2px 10px 2px 10px;
+    margin: 4px auto 4px auto;
     background-color: #adec39;
-    border-left-color: #89ba2d; 
-    border-top-color: #89ba2d; 
-    border-right-color: #638720;
-    border-bottom-color: #638720;
-    border-radius: 5px;
-    padding: 5px;
-    flex: 100%;
+}
+
+.pokemonDiv {
+    float: left;
+    margin: 18px;
+    padding: 6px;
+    border: 2px;
+    border-color: black;
+    border-style: solid;
 }
 
 .flex {

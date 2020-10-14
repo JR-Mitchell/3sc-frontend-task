@@ -26,7 +26,7 @@ function Pokemon(props:{data:PokemonInterface}) {
     let name: string = props.data.name;
     name = name.charAt(0).toUpperCase() + name.substr(1);
 
-    return <div className="pokemonDiv">
+    return <div className="pokemonDiv" draggable>
         <table>
             <thead>
                 <tr>
@@ -53,7 +53,7 @@ function Pokemon(props:{data:PokemonInterface}) {
                 </tr>
             </tbody>
         </table>
-        {sprAddress && <img src={sprAddress} />}
+        {sprAddress && <img src={sprAddress} draggable={false}/>}
     </div>
 }
 

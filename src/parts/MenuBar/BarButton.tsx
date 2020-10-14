@@ -5,24 +5,28 @@ import React from 'react';
 import type { GenerationInterface } from 'utils/Generation';
 
 /**
- * Interface for props of the TopBarButton component
+ * Interface for props of the MenuBarButton component
  */
-interface TopBarButtonProps {
+interface MenuBarButtonProps {
     /**
      * The generation that this button is for
      */
-    gen: GenerationInterface,
+    gen: GenerationInterface
     /**
      * Callback to be called on button click
      */
     callback: ()=>void
+    /**
+     * Position string for working out css classname
+     */
+    pos: string
 }
 
 /**
  * Button for a single generation on the top bar
  * OnClick event shows all species in this generation
  */
-function TopBarButton(props:TopBarButtonProps) {
+function MenuBarButton(props:MenuBarButtonProps) {
     //Format name nicely
     let nameParts: string[] = props.gen.name.split("-");
     let front = nameParts[0]
@@ -30,7 +34,7 @@ function TopBarButton(props:TopBarButtonProps) {
     let back = nameParts[1]?.toUpperCase();
 
     return <button
-        className="topBarGenButton"
+        className={"menuBarGenButton"+props.pos}
         onClick={()=>{props.callback();}}
     >
         {front}
@@ -39,5 +43,5 @@ function TopBarButton(props:TopBarButtonProps) {
     </button>
 }
 
-//Default export is TopBarButton React component
-export default TopBarButton;
+//Default export is MenuBarButton React component
+export default MenuBarButton;
