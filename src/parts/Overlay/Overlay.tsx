@@ -36,7 +36,10 @@ function Overlay(props:OverlayProps) {
             <button
                 className="overlayCloseButton"
                 onClick={()=>{props.closeCallback()}}
-            />
+            >
+                <div className="overlayCloseButtonCross first" />
+                <div className="overlayCloseButtonCross second" />
+            </button>
         </div>
     }
 }

@@ -179,6 +179,25 @@ body {
     border-top-color: #bb0000;
 }
 
+.overlayCloseButtonCross {
+    position: absolute;
+    top: 1px;
+    left: 7.25px;
+    width: 2px;
+    height: 14px;
+    z-index: 4;
+    background-color: black;
+    opacity: 0.7;
+}
+
+.overlayCloseButtonCross.first {
+    transform: rotate(45deg);
+}
+
+.overlayCloseButtonCross.second {
+    transform: rotate(-45deg);
+}
+
 .typeIcon {
     color: white;
     padding: 1px;
