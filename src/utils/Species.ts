@@ -135,6 +135,7 @@ class Species {
     varieties: {[name:string]: Pokemon};
     languageCode: string;
     updateCallback: ()=>void;
+    name: string;
 
     /**
      * Constructor for an instance of Species
@@ -144,10 +145,14 @@ class Species {
      * @param {string, Optional} language: the language identifier,
      *      defaults to "en"
      */
-    constructor(data:SpeciesInterface,updateCallback:()=>{},language?:string) {
+    constructor(data:SpeciesInterface,updateCallback:()=>void,language?:string) {
         this.updateCallback = ()=>{updateCallback();}
         //Default language is english
         this.languageCode = language || "en";
+        this.name = data.names
+            ?.filter((item)=>{
+                return item.language.name === this.languageCode
+            })[0]?.name || data.name;
         const hasGender = data.gender_rate && data.gender_rate !== -1;
         //Biology
         this.biology = {
@@ -270,5 +275,5 @@ class Species {
     }
 }
 
-export type { SpeciesInterface };
+export type { SpeciesInterface, Biology, Meta };
 export { Species }

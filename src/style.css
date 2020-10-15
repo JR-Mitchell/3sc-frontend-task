@@ -354,6 +354,11 @@ body {
     float: left;
 }
 
+.speciesDetailsTitle {
+    margin: 6px;
+    width: 100%;
+}
+
 .speciesInfo {
     margin: 6px;
 }
