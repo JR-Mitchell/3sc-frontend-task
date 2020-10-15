@@ -78,8 +78,10 @@ class SpeciesInfo extends React.Component<SpeciesProps,SpeciesState> {
 
         return <Overlay open closeCallback={()=>{this.props.closeCallback();}}>
             <h2 className="speciesDetailsTitle">{species.name}</h2>
-            <Biology {...species.biology} />
-            <Meta {...species.meta} />
+            <div className="speciesDetailsOuter">
+                <Biology {...species.biology} />
+                <Meta {...species.meta} />
+            </div>
         </Overlay>
     }
 }

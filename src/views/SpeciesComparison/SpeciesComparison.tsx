@@ -86,13 +86,15 @@ class SpeciesComparison extends React.Component<SpeciesProps,SpeciesState> {
         let sprites = this.state.sprites.slice();
         let speciesOne = this.state.speciesOne;
         let speciesTwo = this.state.speciesTwo;
+        let speciesOneVariant = Object.keys(speciesOne.varieties)[0]
+        let speciesTwoVariant = Object.keys(speciesTwo.varieties)[0]
 
         return <Overlay open closeCallback={()=>{this.props.closeCallback();}}>
             <h2 className="speciesDetailsTitle">{speciesOne.name+" vs "+speciesTwo.name}</h2>
-            <Biology {...speciesOne.biology} />
-            <Biology {...speciesTwo.biology} />
-            <Meta {...speciesOne.meta} />
-            <Meta {...speciesTwo.meta} />
+            <div className="speciesDetailsOuter">
+                <Biology one={{...speciesOne.biology}} two={{...speciesTwo.biology}} oneVariant={speciesOneVariant} twoVariant={speciesTwoVariant}/>
+                <Meta one={{...speciesOne.meta}} two={{...speciesTwo.meta}} oneVariant={speciesOneVariant} twoVariant={speciesTwoVariant}/>
+            </div>
         </Overlay>
     }
 }

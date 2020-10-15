@@ -354,11 +354,6 @@ body {
     float: left;
 }
 
-.speciesDetailsTitle {
-    margin: 6px;
-    width: 100%;
-}
-
 .speciesInfo {
     margin: 6px;
 }
@@ -400,6 +395,37 @@ body {
 
 .speciesListAlphaDiv {
     overflow: hidden;
+}
+
+/** Species Detail **/
+
+.speciesDetailsOuter {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    align-content: stretch;
+    justify-content: space-evenly;
+    height: calc(100% - 40px);
+}
+
+.speciesDetailsTitle {
+    margin: 6px;
+    width: 100%;
+}
+
+.speciesDetailsGroup {
+    margin: 6px;
+    background-color: #d3f494;
+    border-radius: 8px;
+}
+
+.speciesDetailsTable {
+    margin: 6px;
+}
+
+.speciesDetailsTableCell {
+    padding: 6px;
+    text-align: left;
 }
 
 /** Msic **/

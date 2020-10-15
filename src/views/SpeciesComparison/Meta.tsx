@@ -4,58 +4,78 @@ import React from 'react';
 //Imports from local 'utils'
 import type { Meta as MetaType } from 'utils/Species';
 
-function Meta(props:MetaType) {
-    let base_experience: React.ReactNode;
-    if (props.base_experience) {
-        if (typeof props.base_experience !== "number") {
-            base_experience = Object.entries(props.base_experience).map((item)=>{
-                return <tr>
-                        <th>{item[0] + " Height:"}</th>
-                        <td>{item[1]}</td>
-                    </tr>
-            })
-        } else {
-            base_experience = <tr>
-                    <th>Base Experience:</th>
-                    <td>{props.base_experience}</td>
-                </tr>
+interface MetaProps {
+    one: MetaType,
+    two: MetaType,
+    oneVariant: string,
+    twoVariant: string,
+}
 
-        }
+function Meta(props:MetaProps) {
+    let one = props.one;
+    let two = props.one;
+
+    let base_experience: React.ReactNode;
+    if (one.base_experience && two.base_experience) {
+        base_experience = <tr>
+            <th className="speciesDetailsTableCell">Base Experience:</th>
+            <td className="speciesDetailsTableCell">
+                {typeof one.base_experience === "number"
+                    ? one.base_experience
+                    : one.base_experience[props.oneVariant]
+                }
+            </td>
+            <td className="speciesDetailsTableCell">
+                {typeof two.base_experience === "number"
+                    ? two.base_experience
+                    : two.base_experience[props.twoVariant]
+                }
+            </td>
+        </tr>
     }
 
     let ev_yields: React.ReactNode;
-    if (props.ev_yields) {
-        if (typeof props.ev_yields !== "string") {
-            ev_yields = Object.entries(props.ev_yields).map((item)=>{
-                return <tr>
-                        <th>{item[0] + " EV Yields:"}</th>
-                        <td>{item[1]}</td>
-                    </tr>
-            })
-        } else {
-            ev_yields = <tr>
-                    <th>EV Yields:</th>
-                    <td>{props.ev_yields}</td>
-                </tr>
-
-        }
+    if (one.ev_yields && two.ev_yields) {
+        ev_yields = <tr>
+            <th className="speciesDetailsTableCell">EV Yields:</th>
+            <td className="speciesDetailsTableCell">
+                {typeof one.ev_yields === "string"
+                    ? one.ev_yields
+                    : one.ev_yields[props.oneVariant]
+                }
+            </td>
+            <td className="speciesDetailsTableCell">
+                {typeof two.ev_yields === "string"
+                    ? two.ev_yields
+                    : two.ev_yields[props.twoVariant]
+                }
+            </td>
+        </tr>
     }
 
-    return <div>
+    return <div className="speciesDetailsGroup">
         <h3 className="speciesDetailsTitle">Metainfo:</h3>
-        <table>
+        <table className="speciesDetailsTable">
             <tbody>
                 <tr>
-                    <th>Capture Rate:</th>
-                    <td>{props.capture_rate}</td>
+                    <th className="speciesDetailsTableCell">Category</th>
+                    <th className="speciesDetailsTableCell">{props.oneVariant}</th>
+                    <th className="speciesDetailsTableCell">{props.twoVariant}</th>
                 </tr>
                 <tr>
-                    <th>Base Happiness:</th>
-                    <td>{props.base_happiness}</td>
+                    <th className="speciesDetailsTableCell">Capture Rate:</th>
+                    <td className="speciesDetailsTableCell">{one.capture_rate}</td>
+                    <td className="speciesDetailsTableCell">{two.capture_rate}</td>
                 </tr>
                 <tr>
-                    <th>Growth Rate:</th>
-                    <td>{props.growth_rate}</td>
+                    <th className="speciesDetailsTableCell">Base Happiness:</th>
+                    <td className="speciesDetailsTableCell">{one.base_happiness}</td>
+                    <td className="speciesDetailsTableCell">{two.base_happiness}</td>
+                </tr>
+                <tr>
+                    <th className="speciesDetailsTableCell">Growth Rate:</th>
+                    <td className="speciesDetailsTableCell">{one.growth_rate}</td>
+                    <td className="speciesDetailsTableCell">{two.growth_rate}</td>
                 </tr>
                 {base_experience}
                 {ev_yields}

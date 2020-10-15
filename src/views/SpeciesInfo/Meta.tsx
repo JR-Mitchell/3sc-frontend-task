@@ -10,14 +10,14 @@ function Meta(props:MetaType) {
         if (typeof props.base_experience !== "number") {
             base_experience = Object.entries(props.base_experience).map((item)=>{
                 return <tr>
-                        <th>{item[0] + " Height:"}</th>
-                        <td>{item[1]}</td>
+                        <th className="speciesDetailsTableCell">{item[0] + " Height:"}</th>
+                        <td className="speciesDetailsTableCell">{item[1]}</td>
                     </tr>
             })
         } else {
             base_experience = <tr>
-                    <th>Base Experience:</th>
-                    <td>{props.base_experience}</td>
+                    <th className="speciesDetailsTableCell">Base Experience:</th>
+                    <td className="speciesDetailsTableCell">{props.base_experience}</td>
                 </tr>
 
         }
@@ -28,34 +28,34 @@ function Meta(props:MetaType) {
         if (typeof props.ev_yields !== "string") {
             ev_yields = Object.entries(props.ev_yields).map((item)=>{
                 return <tr>
-                        <th>{item[0] + " EV Yields:"}</th>
-                        <td>{item[1]}</td>
+                        <th className="speciesDetailsTableCell">{item[0] + " EV Yields:"}</th>
+                        <td className="speciesDetailsTableCell">{item[1]}</td>
                     </tr>
             })
         } else {
             ev_yields = <tr>
-                    <th>EV Yields:</th>
-                    <td>{props.ev_yields}</td>
+                    <th className="speciesDetailsTableCell">EV Yields:</th>
+                    <td className="speciesDetailsTableCell">{props.ev_yields}</td>
                 </tr>
 
         }
     }
 
-    return <div>
+    return <div className="speciesDetailsGroup">
         <h3 className="speciesDetailsTitle">Metainfo:</h3>
         <table>
             <tbody>
                 <tr>
-                    <th>Capture Rate:</th>
-                    <td>{props.capture_rate}</td>
+                    <th className="speciesDetailsTableCell">Capture Rate:</th>
+                    <td className="speciesDetailsTableCell">{props.capture_rate}</td>
                 </tr>
                 <tr>
-                    <th>Base Happiness:</th>
-                    <td>{props.base_happiness}</td>
+                    <th className="speciesDetailsTableCell">Base Happiness:</th>
+                    <td className="speciesDetailsTableCell">{props.base_happiness}</td>
                 </tr>
                 <tr>
-                    <th>Growth Rate:</th>
-                    <td>{props.growth_rate}</td>
+                    <th className="speciesDetailsTableCell">Growth Rate:</th>
+                    <td className="speciesDetailsTableCell">{props.growth_rate}</td>
                 </tr>
                 {base_experience}
                 {ev_yields}
