@@ -6,15 +6,16 @@ import axios from 'axios';
 
 //Imports from local 'utils'
 import type { ReferenceInterface } from 'utils/Reference';
+import type { SpeciesInterface } from 'utils/Species';
 
 //Imports from local 'views'
 import PokeList from 'views/PokeList';
+import SpeciesComparison from 'views/SpeciesComparison';
 
 //Imports from local 'parts'
 import TopBar from 'parts/TopBar';
 import MenuBar from 'parts/MenuBar';
 import DragBar from 'parts/DragBar';
-import Overlay from 'parts/Overlay';
 
 //Import stylesheet
 import 'style.css';
@@ -41,6 +42,10 @@ interface AppState {
      * Array containing pokemon to compare
      */
     compare: (ReferenceInterface | undefined)[]
+    /**
+     *
+     */
+    compareSpecies: (SpeciesInterface | undefined)[]
     /**
      * Whether to show the current comparison screen
      */
@@ -71,6 +76,7 @@ class App extends React.Component<{},AppState> {
             species:{},
             favourites:[],
             compare:[undefined,undefined],
+            compareSpecies:[undefined,undefined],
             isCompareOpen: false,
             posClasses: ["left"],
             scrollSections: []
@@ -93,6 +99,7 @@ class App extends React.Component<{},AppState> {
         });
         let favourites = this.state.favourites.slice();
         let compare = this.state.compare.slice();
+        let compareSpecies = this.state.compareSpecies.slice();
         const isCompareOpen = this.state.isCompareOpen;
         let bodyPos = " " + this.state.posClasses.join(" ")
         let scrollSections = this.state.scrollSections.slice();
@@ -143,10 +150,12 @@ class App extends React.Component<{},AppState> {
                 compare={compare}
                 compareCallback={()=>{this.openCompare();}}
             />
-            <Overlay
-                open={isCompareOpen}
+            {isCompareOpen && <SpeciesComparison
+                speciesOne={compareSpecies[0]}
+                speciesTwo={compareSpecies[1]}
                 closeCallback={()=>{this.closeCompare();}}
             />
+            }
         </>
     }
 
@@ -207,7 +216,6 @@ class App extends React.Component<{},AppState> {
      * Callback to call upon adding a pokemon to the comparison list
      */
     addCompare(event: React.DragEvent<HTMLDivElement>,index:(0|1)) {
-        const currCompare = this.state.compare.slice();
         let rawData = JSON.parse(
             event.dataTransfer.getData("application/json")
         );
@@ -216,10 +224,20 @@ class App extends React.Component<{},AppState> {
             && rawKeys.includes("name")
             && rawKeys.includes("url")
         ) {
-            currCompare[index] = rawData;
-            this.setState({
-                compare: currCompare
-            });
+            this.setState((state,props)=>{
+                let compare = state.compare.slice();
+                compare[index] = rawData;
+                let compareSpecies = state.compareSpecies.slice();
+                compareSpecies[index] = undefined;
+                return {compare: compare,compareSpecies:compareSpecies};
+            })
+            axios.get<SpeciesInterface>(rawData.url).then((response)=>{
+                this.setState((state,props)=>{
+                    let compareSpecies = state.compareSpecies.slice();
+                    compareSpecies[index] = response.data;
+                    return {compareSpecies: compareSpecies};
+                });
+            })
         }
     }
 
@@ -227,7 +245,7 @@ class App extends React.Component<{},AppState> {
      * Callback to call when a compare dialogue is opened
      */
     openCompare() {
-        const currCompare = this.state.compare.slice();
+        const currCompare = this.state.compareSpecies.slice();
         if (currCompare[0] !== undefined && currCompare[1] !== undefined) {
             this.setState({
                 isCompareOpen: true
