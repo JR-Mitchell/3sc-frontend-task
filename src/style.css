@@ -168,12 +168,20 @@ body {
     display: block;
     overflow: hidden;
     text-overflow: clip;
+    cursor: pointer;
+    border-color: black;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+}
+
+.menuBarLink.left:hover {
+    background-color: #e6f9c3;
 }
 
 .menuBarLink.active.left {
-    border-width: 0px 0px 0px 2px;
-    border-left-color: black;
-    border-style: solid;
+    border-width: 0px 0px 1px 2px;
+    font-weight: bold;
+    background-color: #d3f494;
 }
 
 .menuBarGenButton {
