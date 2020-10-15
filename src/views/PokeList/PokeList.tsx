@@ -30,6 +30,14 @@ interface ListProps {
      * Optional title to show above all entries
      */
     title?: string
+    /**
+     * Callback to call when a species card is dragged
+     */
+    dragCallback: ()=>void
+    /**
+     * Callback to call when a species card stops being dragged
+     */
+    dragEndCallback: ()=>void
 }
 
 function PokeList(props:ListProps){
@@ -53,6 +61,8 @@ function PokeList(props:ListProps){
                         return <SpeciesCard
                             key={item.name}
                             reference={{...item}}
+                            dragCallback={()=>{props.dragCallback();}}
+                            dragEndCallback={()=>{props.dragEndCallback();}}
                         />
                     })}
                 </div>

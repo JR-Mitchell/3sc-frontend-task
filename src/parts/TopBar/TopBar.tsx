@@ -13,9 +13,17 @@ import type { ReferenceInterface } from 'utils/Reference';
  */
 interface TopBarProps {
     /**
+     * Position string for working out CSS classnames
+     */
+    pos: string
+    /**
      * Callback for menu button
      */
     menuCallback: () => void
+    /**
+     * Callback for favourites button
+     */
+    favouritesCallback: () => void
 }
 
 /**
@@ -24,17 +32,25 @@ interface TopBarProps {
  */
 function TopBar(props:TopBarProps) {
     return <div className="topBarDiv">
-        <h1>
-            <button
-                className="topBarMenuIcon"
-                onClick={()=>{props.menuCallback();}}
-            >
-                <div className="topBarMenuIconInner" />
-                <div className="topBarMenuIconInner" />
-                <div className="topBarMenuIconInner" />
-            </button>
+        <button
+            className="topBarMenuIcon"
+            onClick={()=>{props.menuCallback();}}
+        >
+            <div className="topBarMenuIconInner" />
+            <div className="topBarMenuIconInner" />
+            <div className="topBarMenuIconInner" />
+        </button>
+        <h1 className="topBarTitle">
             PokeAPI Web UI
         </h1>
+        <button
+            className="topBarMenuIcon"
+            onClick={()=>{props.favouritesCallback();}}
+        >
+            <div className={"topBarFavesIconTop"+props.pos} />
+            <div className={"topBarFavesIconBottom"+props.pos} />
+            <div className="topBarFavesIconCentre" />
+        </button>
     </div>
 }
 

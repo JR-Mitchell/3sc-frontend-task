@@ -3,100 +3,39 @@ body {
     margin: 0px;
 }
 
+/** Main Body **/
 .mainBody {
     float:left;
     width: 100%;
     transition: width 1s, margin-left 1s;
 }
 
-.mainBody.left {
+.mainBody.right {
     width: 80%;
 }
 
-.mainBody.right {
+.mainBody.left {
     width: 80%;
     margin-left: 20%
 }
 
-.mainBody.middle {
+.mainBody.left.right {
     width: 60%;
     margin-left: 20%;
 }
 
-.menuBarDiv {
-    background-color: grey;
-    float:left;
-    width: 0%;
-    height: 100vw;
-    position: fixed;
-    transition: width 1s, margin-left 1s;
-}
-
-.menuBarDiv.right {
-    width: 20%;
-}
-
-.menuBarContents {
-    background-color: white;
-    margin: 2% 10% 2% 10%;
-    width: 80%;
-    border-radius: 2px;
-}
-
-.menuBarLink {
-    width: 100%;
-    display: block;
-    overflow: hidden;
-    text-overflow: clip;
-}
-
-.menuBarLink.active.right {
-    border-width: 0px 0px 0px 2px;
-    border-left-color: black;
-    border-style: solid;
-}
-
-.menuBarGenButton {
-    background-color: #adec39;
-    border-left-color: #89ba2d; 
-    border-top-color: #89ba2d; 
-    border-right-color: #638720;
-    border-bottom-color: #638720;
-    border-radius: 5px;
-    padding: 0px;
-    border-width: 0px;
-    margin: 2% 10% 2% 10%;
-    width: 80%;
-    overflow: hidden;
-    text-overflow: clip;
-    transition: border-width 0s padding 0s;
-    transition-delay: 0.5s;
-}
-
-.menuBarGenButton.right {
-    padding: 1px 6px;
-    border-width: 2px;
-    transition-delay: 0s;
-}
-
-.menuBarTitle {
-    overflow: hidden;
-    text-overflow: clip;
-    width: 80%;
-    margin: 2% 10% 2% 10%;
-    white-space: nowrap;
-}
-
-.menuBarTitle.right {
-    white-space: normal;
-    text-align: center;
-}
-
+/** Top bar **/
 .topBarDiv {
     background-color: #adec39;
     margin: 0px 0px 20px 0px;
     padding: 20px;
     box-shadow: 0px 10px 5px grey;
+    display: flex;
+}
+
+.topBarTitle {
+    flex-grow: 1;
+    text-align: center;
 }
 
 .topBarMenuIcon {
@@ -115,50 +54,165 @@ body {
     background-color: #adec39;
 }
 
-.speciesCard {
-    float: left;
-    margin: 6px;
-    padding: 6px;
-    border: 2px;
+.topBarFavesIconTop {
+    background-color: red;
+    width: 40px;
+    height: 20px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    position: relative;
+    top: -3px;
+    left: -7.5px;
+    transition: top 1s, height 1s, border-radius 1s;
+}
+
+.topBarFavesIconTop.right {
+    top: -3px;
+    height: 19px;
+    border-top-left-radius: 19px;
+    border-top-right-radius: 19px;
+}
+
+.topBarFavesIconBottom {
+    background-color: white;
+    width: 40px;
+    height: 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    position: relative;
+    top: -1px;
+    left: -7.5px;
+    transition: top 1s, height 1s, border-radius 1s;
+}
+
+.topBarFavesIconBottom.right {
+    top: 3px;
+    height: 19px;
+    border-bottom-left-radius: 19px;
+    border-bottom-right-radius: 19px;
+}
+
+.topBarFavesIconCentre {
+    background-color: white;
+    position: relative;
+    top: -28px;
+    left: 7px;
+    width: 6px;
+    height: 6px;
+    border-radius: 9px;
+    border-style: solid;
+    border-color: black;
+    border-width: 3px;
+}
+
+/** Right hand dragbar **/
+.dragBarDiv {
+    background-color: grey;
+    right: 0;
+    width: 0%;
+    height: 100vh;
+    position: fixed;
+    transition: width 1s, margin-left 1s;
+    display: flex;
+    flex-direction: column;
+}
+
+.dragBarDiv.right {
+    width: 20%;
+}
+
+.dragBarDropBox {
+    background-color: white;
+    width: 90%;
+    flex-grow: 1;
+    margin: 2% 5% 2% 5%;
+    overflow: auto;
+}
+
+.dragBarTitle {
+    overflow: hidden;
+    text-overflow: clip;
+    width: 80%;
+    margin: 2% 10% 2% 10%;
+    white-space: nowrap;
+}
+
+.dragBarTitle.right {
+    white-space: normal;
+    text-align: center;
+}
+
+/** Left hand menubar **/
+.menuBarDiv {
+    background-color: grey;
+    float:left;
+    width: 0%;
+    height: 100vh;
+    position: fixed;
+    transition: width 1s, margin-left 1s;
+}
+
+.menuBarDiv.left {
+    width: 20%;
+}
+
+.menuBarContents {
+    background-color: white;
+    margin: 2% 10% 2% 10%;
+    width: 80%;
+    border-radius: 2px;
+}
+
+.menuBarLink {
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    text-overflow: clip;
+}
+
+.menuBarLink.active.left {
+    border-width: 0px 0px 0px 2px;
+    border-left-color: black;
+    border-style: solid;
+}
+
+.menuBarGenButton {
+    background-color: #adec39;
     border-left-color: #89ba2d; 
     border-top-color: #89ba2d; 
     border-right-color: #638720;
     border-bottom-color: #638720;
     border-radius: 5px;
-    border-style: solid;
-}
-
-.speciesTitle {
-    margin: 6px;
-}
-
-.speciesInfo {
-    margin: 6px;
-}
-
-.flex {
-    display: flex;
-}
-
-.speciesListAlphaTitle {
-    width: 100%;
-    padding: 12px;
-}
-
-.speciesListAlphaDiv {
+    padding: 0px;
+    border-width: 0px;
+    margin: 2% 10% 2% 10%;
+    width: 80%;
     overflow: hidden;
+    text-overflow: clip;
+    transition: border-width 0s, padding 0s;
+    transition-delay: 0.5s;
 }
 
-.speciesMoreButton {
-    border-radius: 5px;
-    padding: auto;
+.menuBarGenButton.left {
+    padding: 1px 6px;
+    border-width: 2px;
+    transition-delay: 0s;
 }
 
-.spritePlaceholder {
-    width: 68px;
-    height: 56px;
+.menuBarTitle {
+    overflow: hidden;
+    text-overflow: clip;
+    width: 80%;
+    margin: 2% 10% 2% 10%;
+    white-space: nowrap;
 }
 
+.menuBarTitle.left {
+    white-space: normal;
+    text-align: center;
+}
+
+/** Overlay **/
 .overlayOuter {
     position: fixed;
     left: 0px;
@@ -216,6 +270,54 @@ body {
 
 .overlayCloseButtonCross.second {
     transform: rotate(-45deg);
+}
+
+/** Species card **/
+.speciesCard {
+    float: left;
+    margin: 6px;
+    padding: 6px;
+    border: 2px;
+    border-left-color: #89ba2d;
+    border-top-color: #89ba2d;
+    border-right-color: #638720;
+    border-bottom-color: #638720;
+    border-radius: 5px;
+    border-style: solid;
+    background-color: white;
+}
+
+.speciesTitle {
+    margin: 6px;
+}
+
+.speciesInfo {
+    margin: 6px;
+}
+
+.speciesListAlphaTitle {
+    width: 100%;
+    padding: 12px;
+}
+
+.speciesListAlphaDiv {
+    overflow: hidden;
+}
+
+.speciesMoreButton {
+    border-radius: 5px;
+    padding: auto;
+}
+
+/** Msic **/
+
+.flex {
+    display: flex;
+}
+
+.spritePlaceholder {
+    width: 68px;
+    height: 56px;
 }
 
 .typeIcon {

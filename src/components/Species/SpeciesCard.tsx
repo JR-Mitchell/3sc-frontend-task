@@ -19,6 +19,14 @@ interface SpeciesProps {
      * Reference to the species
      */
     reference: ReferenceInterface
+    /**
+     * Callback to call with OnDragStart event
+     */
+    dragCallback?: ()=>void
+    /**
+     * Callback to call with OnDragEnd event
+     */
+    dragEndCallback?: (event: React.DragEvent<HTMLDivElement>)=>void
 }
 
 /**
@@ -94,7 +102,22 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
 
         name = num ? "#" + num.toString() + " " + name: name;
 
-        return <div className="speciesCard" draggable>
+        return <div
+            className="speciesCard"
+            draggable
+            onDragStart={(event)=>{
+                event.dataTransfer.setData(
+                    "application/json",
+                    JSON.stringify(this.props.reference)
+                );
+                this.props.dragCallback
+                    && this.props.dragCallback();
+            }}
+            onDragEnd={(event)=>{
+                this.props.dragEndCallback
+                    && this.props.dragEndCallback(event);
+            }}
+        >
             <h4 className="speciesTitle">{name}</h4>
             <div>
             {sprAddress
