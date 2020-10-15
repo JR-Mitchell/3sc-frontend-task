@@ -14,6 +14,7 @@ import PokeList from 'views/PokeList';
 import TopBar from 'parts/TopBar';
 import MenuBar from 'parts/MenuBar';
 import DragBar from 'parts/DragBar';
+import Overlay from 'parts/Overlay';
 
 //Import stylesheet
 import 'style.css';
@@ -36,6 +37,14 @@ interface AppState {
      * favourited
      */
     favourites: ReferenceInterface[]
+    /**
+     * Array containing pokemon to compare
+     */
+    compare: (ReferenceInterface | undefined)[]
+    /**
+     * Whether to show the current comparison screen
+     */
+    isCompareOpen: boolean
     /**
      * Array of CSS classnames to apply to structural parts
      * in order for sidebars to function as intended
@@ -61,6 +70,8 @@ class App extends React.Component<{},AppState> {
         this.state = {
             species:{},
             favourites:[],
+            compare:[undefined,undefined],
+            isCompareOpen: false,
             posClasses: ["left"],
             scrollSections: []
         };
@@ -81,6 +92,8 @@ class App extends React.Component<{},AppState> {
             species[item[0]] = item[1].slice();
         });
         let favourites = this.state.favourites.slice();
+        let compare = this.state.compare.slice();
+        const isCompareOpen = this.state.isCompareOpen;
         let bodyPos = " " + this.state.posClasses.join(" ")
         let scrollSections = this.state.scrollSections.slice();
         const bodyTitle = this.state.bodyTitle;
@@ -118,9 +131,21 @@ class App extends React.Component<{},AppState> {
             </div>
             <DragBar
                 pos={bodyPos}
-                dropCallback={(event)=>{this.addFavourite(event);}}
+                dropCallback={(event,index?:number)=>{
+                    if (index===0 || index===1) {
+                        this.addCompare(event,index);
+                    } else {
+                        this.addFavourite(event);
+                    }
+                }}
                 dragEndCallback={(index)=>{this.removeFavourite(index);}}
                 contents={favourites}
+                compare={compare}
+                compareCallback={()=>{this.openCompare();}}
+            />
+            <Overlay
+                open={isCompareOpen}
+                closeCallback={()=>{this.closeCompare();}}
             />
         </>
     }
@@ -176,6 +201,47 @@ class App extends React.Component<{},AppState> {
                 favourites: currFaves.concat([rawData])
             });
         }
+    }
+
+    /**
+     * Callback to call upon adding a pokemon to the comparison list
+     */
+    addCompare(event: React.DragEvent<HTMLDivElement>,index:(0|1)) {
+        const currCompare = this.state.compare.slice();
+        let rawData = JSON.parse(
+            event.dataTransfer.getData("application/json")
+        );
+        let rawKeys = Object.keys(rawData);
+        if (rawKeys.length === 2
+            && rawKeys.includes("name")
+            && rawKeys.includes("url")
+        ) {
+            currCompare[index] = rawData;
+            this.setState({
+                compare: currCompare
+            });
+        }
+    }
+
+    /**
+     * Callback to call when a compare dialogue is opened
+     */
+    openCompare() {
+        const currCompare = this.state.compare.slice();
+        if (currCompare[0] !== undefined && currCompare[1] !== undefined) {
+            this.setState({
+                isCompareOpen: true
+            });
+        }
+    }
+
+    /**
+     * Callback to call when a compare dialogue is closed
+     */
+    closeCompare() {
+        this.setState({
+            isCompareOpen: false
+        });
     }
 
     /**

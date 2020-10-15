@@ -31,6 +31,14 @@ interface SpeciesProps {
      * Whether to show optional grab helper icon
      */
     showGrab?: boolean
+    /**
+     * Whether to show info button
+     */
+    showInfoButton?: boolean
+    /**
+     * Whether to grow to the full extent of the container
+     */
+    flexGrow?: boolean
 }
 
 /**
@@ -111,8 +119,14 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
 
         name = num ? "#" + num.toString() + " " + name: name;
 
+        //Work out classname
+        let classNameList: string[] = ["speciesCard"];
+        grab && classNameList.push("grab");
+        this.props.flexGrow && classNameList.push("grow");
+        const className = classNameList.join(" ");
+
         return <div
-            className={grab ? "speciesCard grab" : "speciesCard"}
+            className={className}
             draggable
             onDragStart={(event)=>{
                 event.dataTransfer.setData(
@@ -160,11 +174,15 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
                     draggable={false}
                 />
                 : <div className="spritePlaceholder" />}
-            <button className="speciesMoreButton" onClick={()=>{
-                this.infoOpen();
-            }}>
+            {this.props.showInfoButton && <button
+                className="speciesMoreButton"
+                onClick={()=>{
+                    this.infoOpen();
+                }}
+            >
                 Info
             </button>
+            }
             </div>
             {info}
         </div>

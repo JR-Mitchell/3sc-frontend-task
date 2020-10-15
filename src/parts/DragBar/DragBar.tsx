@@ -21,15 +21,24 @@ interface DragBarProps {
     /**
      * Callback to call upon dropping a species into the drag bar
      */
-    dropCallback: (event: React.DragEvent<HTMLDivElement>)=>void
+    dropCallback: (event: React.DragEvent<HTMLDivElement>,index?:number)=>void
     /**
      * Callback to call upon ending a species' drag event
      */
     dragEndCallback: (index: number)=>void
     /**
+     * Callback to call upon clicking the compare button
+     */
+    compareCallback: ()=>void
+    /**
      * Array of References for species to display in card area
      */
     contents: ReferenceInterface[]
+    /**
+     * Array of two species References to display in
+     * comparison area
+     */
+    compare: (ReferenceInterface | undefined)[]
 }
 
 /**
@@ -39,28 +48,70 @@ interface DragBarProps {
  */
 function DragBar(props: DragBarProps) {
     return <div className={"dragBarDiv"+props.pos}>
-        <h3 className={"dragBarTitle"+props.pos}>
-            Favourites
-        </h3>
-        <h4 className={"dragBarTitle"+props.pos}>
-            Drag a pokemon card to the area below!
-        </h4>
-        <div
-            className={"dragBarDropBox"+props.pos}
-            onDragOver={(event)=>{event.preventDefault();}}
-            onDrop={(event)=>{props.dropCallback(event);}}
-        >
-            {props.contents.map((item,index)=>{
-                return <SpeciesCard
-                    showGrab
-                    key={item.name}
-                    reference={item}
-                    dragEndCallback={(event)=>{
-                        event.dataTransfer.dropEffect==="none"
-                            && props.dragEndCallback(index);
-                    }}
-                />
-            })}
+        <div className="dragBarFavDiv">
+            <h3 className={"dragBarTitle"+props.pos}>
+                Favourites
+            </h3>
+            <h4 className={"dragBarTitle"+props.pos}>
+                Drag a Pokemon card to the area below
+                to add it to your favourites
+            </h4>
+            <div
+                className={"dragBarDropBox"+props.pos}
+                onDragOver={(event)=>{event.preventDefault();}}
+                onDrop={(event)=>{props.dropCallback(event);}}
+            >
+                {props.contents.map((item,index)=>{
+                    return <SpeciesCard
+                        showGrab
+                        showInfoButton
+                        key={item.name}
+                        reference={item}
+                        dragEndCallback={(event)=>{
+                            event.dataTransfer.dropEffect==="none"
+                                && props.dragEndCallback(index);
+                        }}
+                    />
+                })}
+            </div>
+        </div>
+        <div className="dragBarCompeteDiv">
+            <h3 className={"dragBarTitle"+props.pos}>
+                Compare Pokemon
+            </h3>
+            <div className="dragBarCompeteInner">
+                <div
+                    className="dragBarCompeteSlot"
+                    onDragOver={(event)=>{event.preventDefault();}}
+                    onDrop={(event)=>{props.dropCallback(event,0);}}
+                >
+                    {props.compare[0] && <SpeciesCard
+                        flexGrow
+                        key={props.compare[0].name}
+                        reference={props.compare[0]}
+                    />
+                    }
+                </div>
+                VS
+                <div
+                    className="dragBarCompeteSlot"
+                    onDragOver={(event)=>{event.preventDefault();}}
+                    onDrop={(event)=>{props.dropCallback(event,1);}}
+                >
+                    {props.compare[1] && <SpeciesCard
+                        flexGrow
+                        key={props.compare[1].name}
+                        reference={props.compare[1]}
+                    />
+                    }
+                </div>
+            </div>
+            <button
+                className="dragBarCompeteButton"
+                onClick={()=>{props.compareCallback();}}
+            >
+                Compare!
+            </button>
         </div>
     </div>
 }

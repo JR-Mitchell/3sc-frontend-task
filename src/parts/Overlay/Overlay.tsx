@@ -42,6 +42,7 @@ function Overlay(props:OverlayProps) {
             </button>
         </div>
     }
+    return null;
 }
 
 //Default export is the Overlay component
