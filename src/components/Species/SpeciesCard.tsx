@@ -27,6 +27,10 @@ interface SpeciesProps {
      * Callback to call with OnDragEnd event
      */
     dragEndCallback?: (event: React.DragEvent<HTMLDivElement>)=>void
+    /**
+     * Whether to show optional grab helper icon
+     */
+    showGrab?: boolean
 }
 
 /**
@@ -45,6 +49,10 @@ interface SpeciesState {
      * The info element to display about this species
      */
     info?: React.ReactNode
+    /**
+     * Whether to show a grab icon on the card
+     */
+    grab: boolean
 }
 
 /**
@@ -59,7 +67,7 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
      */
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {grab:false};
         //Get species info
         axios.get<SpeciesInterface>(
             props.reference.url
@@ -81,6 +89,7 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
         let species = {...this.state.species};
         let sprAddress = this.state.spriteUrl;
         let info = this.state.info;
+        const grab = this.state.grab;
 
         //Make name proper case
         let name: string = species?.name || this.props.reference.name;
@@ -117,8 +126,30 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
                 this.props.dragEndCallback
                     && this.props.dragEndCallback(event);
             }}
+            onMouseEnter={()=>{
+                this.setState({grab:true});
+            }}
+            onMouseLeave={()=>{
+                this.setState({grab:false});
+            }}
         >
-            <h4 className="speciesTitle">{name}</h4>
+            <div className="speciesGrabIconContainer">
+                <h4 className="speciesTitle">
+                    {name}
+                </h4>
+                {this.props.showGrab
+                    && grab
+                    && <div className="speciesGrabIcon">
+                    <img
+                    src={"https://github.com/google/material-design-icons/"
+                        + "blob/master/png/action/open_with/materialicons/"
+                        + "24dp/1x/baseline_open_with_black_24dp.png?raw=true"}
+                    className="speciesGrabIcon"
+                    draggable={false}
+                    />
+                </div>
+                }
+            </div>
             <div>
             {sprAddress
                 ? <img

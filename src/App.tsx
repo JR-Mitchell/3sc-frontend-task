@@ -60,6 +60,11 @@ class App extends React.Component<{},AppState> {
             posClasses: ["left"],
             scrollSections: []
         };
+        //Preload moving icon
+        let img = new Image();
+        img.src = "https://github.com/google/material-design-icons/"
+            + "blob/master/png/action/open_with/materialicons/24dp/"
+            + "1x/baseline_open_with_black_24dp.png?raw=true";
     }
 
     /**

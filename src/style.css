@@ -127,6 +127,11 @@ body {
     flex-grow: 1;
     margin: 2% 5% 2% 5%;
     overflow: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: space-evenly;
 }
 
 .dragBarTitle {
@@ -296,7 +301,8 @@ body {
 }
 
 .speciesTitle {
-    margin: 6px;
+    margin: 0px 6px 0px 0px;
+    float: left;
 }
 
 .speciesInfo {
@@ -315,6 +321,19 @@ body {
 .speciesMoreButton {
     border-radius: 5px;
     padding: auto;
+}
+
+.speciesGrabIcon {
+    width: 20px;
+    height: 20px;
+    float: right;
+}
+
+.speciesGrabIconContainer {
+    height: 20px;
+    padding: 6px;
+    background-color: #cccccc;
+    border-radius: 6px;
 }
 
 /** Msic **/

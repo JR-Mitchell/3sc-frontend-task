@@ -59,6 +59,7 @@ function PokeList(props:ListProps){
                 >
                     {speciesList.map((item)=>{
                         return <SpeciesCard
+                            showGrab
                             key={item.name}
                             reference={{...item}}
                             dragCallback={()=>{props.dragCallback();}}
