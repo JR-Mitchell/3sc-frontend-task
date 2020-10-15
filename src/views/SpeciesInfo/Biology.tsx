@@ -43,7 +43,7 @@ function Biology(props:BiologyType) {
 
     return <div className="speciesDetailsGroup">
         <h3 className="speciesDetailsTitle">Biology:</h3>
-        <table>
+        <table className="speciesDetailsTable">
             <tbody>
                 <tr>
                     <th className="speciesDetailsTableCell">Genus:</th>

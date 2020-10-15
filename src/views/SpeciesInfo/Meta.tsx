@@ -43,7 +43,7 @@ function Meta(props:MetaType) {
 
     return <div className="speciesDetailsGroup">
         <h3 className="speciesDetailsTitle">Metainfo:</h3>
-        <table>
+        <table className="speciesDetailsTable">
             <tbody>
                 <tr>
                     <th className="speciesDetailsTableCell">Capture Rate:</th>
