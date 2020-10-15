@@ -52,6 +52,7 @@ function DragBar(props: DragBarProps) {
         >
             {props.contents.map((item,index)=>{
                 return <SpeciesCard
+                    showGrab
                     key={item.name}
                     reference={item}
                     dragEndCallback={(event)=>{

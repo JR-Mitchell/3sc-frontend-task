@@ -89,7 +89,7 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
         let species = {...this.state.species};
         let sprAddress = this.state.spriteUrl;
         let info = this.state.info;
-        const grab = this.state.grab;
+        const grab = this.props.showGrab && this.state.grab;
 
         //Make name proper case
         let name: string = species?.name || this.props.reference.name;
@@ -112,7 +112,7 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
         name = num ? "#" + num.toString() + " " + name: name;
 
         return <div
-            className="speciesCard"
+            className={grab ? "speciesCard grab" : "speciesCard"}
             draggable
             onDragStart={(event)=>{
                 event.dataTransfer.setData(
@@ -133,22 +133,24 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
                 this.setState({grab:false});
             }}
         >
-            <div className="speciesGrabIconContainer">
+            <div className={
+                grab
+                    ? "speciesGrabIconContainer grab"
+                    : "speciesGrabIconContainer"
+            }>
                 <h4 className="speciesTitle">
                     {name}
                 </h4>
-                {this.props.showGrab
-                    && grab
-                    && <div className="speciesGrabIcon">
-                    <img
+                <div className="speciesGrabIcon">
+                {grab && <img
                     src={"https://github.com/google/material-design-icons/"
                         + "blob/master/png/action/open_with/materialicons/"
                         + "24dp/1x/baseline_open_with_black_24dp.png?raw=true"}
                     className="speciesGrabIcon"
                     draggable={false}
                     />
-                </div>
                 }
+                </div>
             </div>
             <div>
             {sprAddress

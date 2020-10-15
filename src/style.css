@@ -11,17 +11,17 @@ body {
 }
 
 .mainBody.right {
-    width: 80%;
+    width: 76%;
 }
 
 .mainBody.left {
-    width: 80%;
-    margin-left: 20%
+    width: 76%;
+    margin-left: 24%
 }
 
 .mainBody.left.right {
-    width: 60%;
-    margin-left: 20%;
+    width: 52%;
+    margin-left: 24%;
 }
 
 /** Top bar **/
@@ -118,7 +118,7 @@ body {
 }
 
 .dragBarDiv.right {
-    width: 20%;
+    width: 24%;
 }
 
 .dragBarDropBox {
@@ -158,7 +158,7 @@ body {
 }
 
 .menuBarDiv.left {
-    width: 20%;
+    width: 24%;
 }
 
 .menuBarContents {
@@ -300,6 +300,11 @@ body {
     background-color: white;
 }
 
+.speciesCard.grab {
+    margin-left: -4px;
+    margin-right: -4px;
+}
+
 .speciesTitle {
     margin: 0px 6px 0px 0px;
     float: left;
@@ -334,6 +339,11 @@ body {
     padding: 6px;
     background-color: #cccccc;
     border-radius: 6px;
+}
+
+.speciesGrabIconContainer.grab {
+    padding-left: 16px;
+    padding-right: 16px;
 }
 
 /** Msic **/
