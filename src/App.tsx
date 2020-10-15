@@ -23,6 +23,10 @@ import 'style.css';
  */
 interface AppState {
     /**
+     * The title of the body's main section
+     */
+    bodyTitle?: string
+    /**
      * An object of alphabetised reference lists to pokemon species
      * for the selected generation
      */
@@ -78,14 +82,17 @@ class App extends React.Component<{},AppState> {
         });
         let favourites = this.state.favourites.slice();
         let bodyPos = " " + this.state.posClasses.join(" ")
-        let scrollSections = this.state.scrollSections;
+        let scrollSections = this.state.scrollSections.slice();
+        const bodyTitle = this.state.bodyTitle;
 
         return <>
             <MenuBar
                 pos={bodyPos}
-                generationCallback={(species:ReferenceInterface[])=>{
-                    this.selectGeneration(species);
-                }}
+                generationCallback={
+                    (species:ReferenceInterface[],title?:string)=>{
+                        this.selectGeneration(species,title);
+                    }
+                }
                 scrollSections={scrollSections}
             />
             <div className={"mainBody"+bodyPos}>
@@ -99,6 +106,7 @@ class App extends React.Component<{},AppState> {
                     pos={bodyPos}
                 />
                 <PokeList
+                    title={bodyTitle}
                     species={species}
                     dragCallback={()=>{
                         this.tempEnableRight();
@@ -119,9 +127,13 @@ class App extends React.Component<{},AppState> {
 
     /**
      * Callback to select a particular generation of pokemon
-     * Takes a list of references and alphabetises
+     *
+     * @param {ReferenceInterface[]} species: an array of species
+     *      of pokemon in the given generation
+     *
+     * @param {string, Optional} title: the title of the generation
      */
-    selectGeneration(species:ReferenceInterface[]) {
+    selectGeneration(species:ReferenceInterface[],title?: string) {
         // Alphabetically deal with species
         let alphabetisedSpecies: {[key: string]:ReferenceInterface[]} = {};
         let validCharacters: string[] = [];
@@ -141,7 +153,8 @@ class App extends React.Component<{},AppState> {
 
         this.setState({
             species:alphabetisedSpecies,
-            scrollSections:validCharacters
+            scrollSections:validCharacters,
+            bodyTitle: title
         });
     }
 

@@ -42,7 +42,7 @@ interface ListProps {
 
 function PokeList(props:ListProps){
     return <>
-        {props.title && <h1>{props.title}</h1>}
+        {props.title && <h1 className="speciesListTitle">{props.title}</h1>}
         {Object.entries(props.species).map((item)=>{
             /** Set of pokemon species for this letter **/
             let char = item[0];

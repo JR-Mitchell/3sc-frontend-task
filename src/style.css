@@ -87,9 +87,9 @@ body {
 
 .topBarFavesIconBottom.right {
     top: 3px;
-    height: 19px;
-    border-bottom-left-radius: 19px;
-    border-bottom-right-radius: 19px;
+    height: 17px;
+    border-bottom-left-radius: 17px;
+    border-bottom-right-radius: 17px;
 }
 
 .topBarFavesIconCentre {
@@ -314,15 +314,6 @@ body {
     margin: 6px;
 }
 
-.speciesListAlphaTitle {
-    width: 100%;
-    padding: 12px;
-}
-
-.speciesListAlphaDiv {
-    overflow: hidden;
-}
-
 .speciesMoreButton {
     border-radius: 5px;
     padding: auto;
@@ -344,6 +335,22 @@ body {
 .speciesGrabIconContainer.grab {
     padding-left: 16px;
     padding-right: 16px;
+}
+
+/** Species List **/
+.speciesListTitle {
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+}
+
+.speciesListAlphaTitle {
+    width: 100%;
+    padding: 12px;
+}
+
+.speciesListAlphaDiv {
+    overflow: hidden;
 }
 
 /** Msic **/

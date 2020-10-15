@@ -26,7 +26,7 @@ interface MenuBarProps {
     /**
      * Callback for the generation buttons
      */
-    generationCallback: (pokemon: ReferenceInterface[]) => void
+    generationCallback: (pokemon: ReferenceInterface[],title:string) => void
     /**
      * Name of scroll sections to create links for
      */
@@ -82,12 +82,25 @@ class MenuBar extends React.Component<MenuBarProps,MenuBarState> {
                     item.pokemon_species.sort((a,b)=>{
                         return a.name < b.name ? -1 : 1;
                     });
+                    //Format name nicely
+                    let nameParts: string[] = item.name.split("-");
+                    let front = nameParts[0]
+                        && nameParts[0].charAt(0).toUpperCase()
+                            + nameParts[0].substr(1);
+                    let back = nameParts[1].toUpperCase();
+                    let prettyNameParts: string[] = [];
+                    front && prettyNameParts.push(front);
+                    back && prettyNameParts.push(back);
+                    const prettyName = prettyNameParts.join(" ");
+
                     return <Fragment key={item.name}>
                         <BarButton
+                            label={prettyName}
                             gen={item}
                             callback={()=>{
                                 this.props.generationCallback(
-                                    item.pokemon_species
+                                    item.pokemon_species,
+                                    prettyName
                                 );
                                 this.setState({currGen:index})
                             }}

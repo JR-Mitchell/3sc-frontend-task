@@ -20,6 +20,10 @@ interface MenuBarButtonProps {
      * Position string for working out css classname
      */
     pos: string
+    /**
+     * The label for the button
+     */
+    label: string
 }
 
 /**
@@ -27,19 +31,11 @@ interface MenuBarButtonProps {
  * OnClick event shows all species in this generation
  */
 function MenuBarButton(props:MenuBarButtonProps) {
-    //Format name nicely
-    let nameParts: string[] = props.gen.name.split("-");
-    let front = nameParts[0]
-        && nameParts[0].charAt(0).toUpperCase() + nameParts[0].substr(1);
-    let back = nameParts[1]?.toUpperCase();
-
     return <button
         className={"menuBarGenButton"+props.pos}
         onClick={()=>{props.callback();}}
     >
-        {front}
-        {" "}
-        {back}
+        {props.label}
     </button>
 }
 
