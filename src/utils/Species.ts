@@ -171,6 +171,10 @@ class Species {
             base_happiness: data.base_happiness,
             growth_rate: data.growth_rate?.name
         };
+        if (this.meta.growth_rate) {
+             this.meta.growth_rate = this.meta.growth_rate.charAt(0).toUpperCase()
+                + this.meta.growth_rate.substr(1);
+        }
         //Get varieties
         this.varieties = {};
         for (let i=0; i<data.varieties.length; i++) {
