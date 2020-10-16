@@ -458,6 +458,19 @@ body {
     text-align: center;
 }
 
+/** Color helpers for table comparison **/
+.red {
+    background-color: #f05151;
+}
+
+.yellow {
+    background-color: #f1f494;
+}
+
+.green {
+    background-color: #adec39;
+}
+
 /* Colour helpers for types */
 .typeColourNormal {
     background-color: #a8a878;

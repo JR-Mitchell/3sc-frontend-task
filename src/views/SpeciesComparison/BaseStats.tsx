@@ -19,10 +19,26 @@ function BaseStats(props:BaseStatsProps) {
                     <th className="speciesDetailsTableCell">{props.twoVariant}</th>
                 </tr>
                 {Object.entries(props.one).map((item)=>{
+                    let bonusClassOne = "";
+                    let bonusClassTwo = "";
+                    let valOne = item[1];
+                    let valTwo = props.two[item[0]];
+                    if (typeof valOne === "number" && typeof valTwo === "number") {
+                        if (valOne < valTwo) {
+                            bonusClassOne = " red";
+                            bonusClassTwo = " green";
+                        } else if (valOne > valTwo) {
+                            bonusClassOne = " green";
+                            bonusClassTwo = " red";
+                        } else {
+                            bonusClassOne = " yellow";
+                            bonusClassTwo = " yellow";
+                        }
+                    }
                     return <tr key={item[0]}>
                         <th className="speciesDetailsTableCell">{item[0].toUpperCase()+":"}</th>
-                        <td className="speciesDetailsTableCell">{item[1]}</td>
-                        <td className="speciesDetailsTableCell">{props.two[item[0]]}</td>
+                        <td className={"speciesDetailsTableCell"+bonusClassOne}>{item[1]}</td>
+                        <td className={"speciesDetailsTableCell"+bonusClassTwo}>{props.two[item[0]]}</td>
                     </tr>
                 })}
             </tbody>
