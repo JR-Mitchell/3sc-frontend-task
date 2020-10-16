@@ -62,7 +62,7 @@ function Biology(props:BiologyProps) {
     offData[props.oneVariant] = {...oneData};
     offData[props.twoVariant] = {...twoData};
 
-    return <InfoTable title="Metainfo:" data={{...offData}} />
+    return <InfoTable title="Biology:" data={{...offData}} />
 }
 
 //Default export is React Biology component

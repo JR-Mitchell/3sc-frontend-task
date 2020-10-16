@@ -137,6 +137,7 @@ class Species {
     updateCallback: ()=>void;
     name: string;
     types: {[name:string]: string[]};
+    sprites: {[name:string]: string};
 
     /**
      * Constructor for an instance of Species
@@ -218,6 +219,8 @@ class Species {
         let spreadEvs: {[key: string]: string[]} = {};
         //Types
         let types: {[key:string]: string[]} = {};
+        //Sprites
+        let sprites: {[key:string]: string} = {};
         for (const name in this.varieties) {
             let newName = this.varieties[name].name;
             newVarieties[newName] = this.varieties[name];
@@ -255,6 +258,8 @@ class Species {
             evs[newName] = ev;
             //Types
             types[newName] = this.varieties[name].types;
+            //Sprites
+            sprites[newName] = this.varieties[name].icon_url;
         }
         //Heights
         if (Object.keys(spreadHeights).length == 1) {
@@ -282,6 +287,8 @@ class Species {
         }
         //Types
         this.types = {...types};
+        //Sprites
+        this.sprites = {...sprites};
         this.varieties = {...newVarieties};
         this.updateCallback();
     }

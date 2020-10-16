@@ -406,6 +406,7 @@ body {
     align-content: stretch;
     justify-content: space-evenly;
     height: calc(100% - 40px);
+    overflow: scroll;
 }
 
 .speciesDetailsTitle {

@@ -136,6 +136,7 @@ class Pokemon {
     meta: Meta;
     types: string[];
     base_stats: {[key: string]: number};
+    icon_url: string;
 
     /**
      * Constructor for an instance of Pokemon
@@ -147,6 +148,10 @@ class Pokemon {
      */
     constructor(data:PokemonInterface,updateCallback:()=>void,defaultName:string,language:string) {
         this.name = data.name;
+        this.icon_url = "https://raw.githubusercontent.com/PokeAPI/"
+            + "sprites/master/sprites/pokemon/"
+            + "versions/generation-viii/icons/"
+            + data.id + ".png";
         //Biology
         this.biology = {
             height: data.height,

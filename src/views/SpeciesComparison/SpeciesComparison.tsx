@@ -9,6 +9,7 @@ import Overlay from 'parts/Overlay';
 
 //Import from local 'components'
 import TypeIcon from 'components/TypeIcon';
+import Types from 'components/TypeTable';
 
 //Imports from local 'utils'
 import type { SpeciesInterface } from 'utils/Species';
@@ -18,7 +19,6 @@ import { Species } from 'utils/Species';
 import Biology from './Biology';
 import Meta from './Meta';
 import BaseStats from './BaseStats';
-import Types from './Types';
 
 /**
  * Interface for the props of the SpeciesComparison component
@@ -154,7 +154,7 @@ class SpeciesComparison extends React.Component<SpeciesProps,SpeciesState> {
                 {variantTwoKeys.length > 1 && ")"}
             </h2>
             <div className="speciesDetailsOuter">
-                <Types {...speciesOne.types} {...speciesTwo.types} />
+                <Types data={{...speciesOne.types,...speciesTwo.types}} sprites={{...speciesOne.sprites,...speciesTwo.sprites}} />
                 <Biology one={{...speciesOne.biology}} two={{...speciesTwo.biology}} oneVariant={variantOne} twoVariant={variantTwo}/>
                 <Meta one={{...speciesOne.meta}} two={{...speciesTwo.meta}} oneVariant={variantOne} twoVariant={variantTwo}/>
                 <BaseStats
