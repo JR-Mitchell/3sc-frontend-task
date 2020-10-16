@@ -17,6 +17,7 @@ import { Species } from 'utils/Species';
 //Imports from local directory
 import Biology from './Biology';
 import Meta from './Meta';
+import BaseStats from './BaseStats';
 
 /**
  * Interface for the props of the SpeciesComparison component
@@ -94,6 +95,12 @@ class SpeciesComparison extends React.Component<SpeciesProps,SpeciesState> {
             <div className="speciesDetailsOuter">
                 <Biology one={{...speciesOne.biology}} two={{...speciesTwo.biology}} oneVariant={speciesOneVariant} twoVariant={speciesTwoVariant}/>
                 <Meta one={{...speciesOne.meta}} two={{...speciesTwo.meta}} oneVariant={speciesOneVariant} twoVariant={speciesTwoVariant}/>
+                <BaseStats
+                    one={{...speciesOne.varieties[speciesOneVariant]?.base_stats}}
+                    two={{...speciesTwo.varieties[speciesTwoVariant]?.base_stats}}
+                    oneVariant={speciesOneVariant}
+                    twoVariant={speciesTwoVariant}
+                />
             </div>
         </Overlay>
     }

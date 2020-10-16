@@ -120,6 +120,13 @@ interface Meta {
     ev_yields?: string
 }
 
+interface Form {
+    is_default: boolean,
+    is_battle_only: boolean,
+    is_mega: boolean,
+    form_names: Name[]
+}
+
 /**
  * Class for processing data about a pokemon
  */
@@ -135,9 +142,10 @@ class Pokemon {
      *
      * @param {PokemonInterface} data: the raw data to process
      * @param {()=>void} updateCallback: callback when axios request for form name returns
+     * @param {string} defaultName: the name of the default pokemon form
      * @param {string} language: the language identifier
      */
-    constructor(data:PokemonInterface,updateCallback:()=>void,language:string) {
+    constructor(data:PokemonInterface,updateCallback:()=>void,defaultName:string,language:string) {
         this.name = data.name;
         //Biology
         this.biology = {
@@ -169,10 +177,14 @@ class Pokemon {
         })
         this.meta.ev_yields = evYieldsBase.join(", ");
         //Name
-        axios.get<{form_names:Name[]}>(data.forms[0].url).then((response)=>{
-            this.name = response.data.form_names.filter(
-                (item)=>item.language.name === language
-            )[0]?.name || this.name;
+        axios.get<Form>(data.forms[0].url).then((response)=>{
+            this.name = response.data.is_default
+                && !response.data.is_mega
+                && !response.data.is_battle_only
+                ? defaultName
+                : (response.data.form_names.filter(
+                        (item)=>item.language.name === language
+                    )[0]?.name || this.name);
             updateCallback();
         })
     }

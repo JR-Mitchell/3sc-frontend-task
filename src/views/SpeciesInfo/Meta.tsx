@@ -9,7 +9,7 @@ function Meta(props:MetaType) {
     if (props.base_experience) {
         if (typeof props.base_experience !== "number") {
             base_experience = Object.entries(props.base_experience).map((item)=>{
-                return <tr>
+                return <tr key={item[0]}>
                         <th className="speciesDetailsTableCell">{item[0] + " Height:"}</th>
                         <td className="speciesDetailsTableCell">{item[1]}</td>
                     </tr>
@@ -27,7 +27,7 @@ function Meta(props:MetaType) {
     if (props.ev_yields) {
         if (typeof props.ev_yields !== "string") {
             ev_yields = Object.entries(props.ev_yields).map((item)=>{
-                return <tr>
+                return <tr key={item[0]}>
                         <th className="speciesDetailsTableCell">{item[0] + " EV Yields:"}</th>
                         <td className="speciesDetailsTableCell">{item[1]}</td>
                     </tr>

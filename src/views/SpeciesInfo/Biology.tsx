@@ -9,7 +9,7 @@ function Biology(props:BiologyType) {
     if (props.height) {
         if (typeof props.height !== "number") {
             height = Object.entries(props.height).map((item)=>{
-                return <tr>
+                return <tr key={item[0]}>
                         <th className="speciesDetailsTableCell">{item[0] + " Height:"}</th>
                         <td className="speciesDetailsTableCell">{item[1]}</td>
                     </tr>
@@ -27,7 +27,7 @@ function Biology(props:BiologyType) {
     if (props.weight) {
         if (typeof props.weight !== "number") {
             weight = Object.entries(props.weight).map((item)=>{
-                return <tr>
+                return <tr key={item[0]}>
                         <th className="speciesDetailsTableCell">{item[0] + " Weight:"}</th>
                         <td className="speciesDetailsTableCell">{item[1]}</td>
                     </tr>

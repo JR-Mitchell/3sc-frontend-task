@@ -17,6 +17,7 @@ import { Species } from 'utils/Species';
 //Imports from local directory
 import Biology from './Biology';
 import Meta from './Meta';
+import BaseStats from './BaseStats';
 
 /**
  * Interface for the props of the SpeciesInfo component
@@ -81,6 +82,9 @@ class SpeciesInfo extends React.Component<SpeciesProps,SpeciesState> {
             <div className="speciesDetailsOuter">
                 <Biology {...species.biology} />
                 <Meta {...species.meta} />
+                {species.varieties.hasOwnProperty(species.name) &&
+                    <BaseStats {...species.varieties[species.name].base_stats}/>
+                }
             </div>
         </Overlay>
     }

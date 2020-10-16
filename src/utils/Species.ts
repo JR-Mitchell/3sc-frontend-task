@@ -187,6 +187,7 @@ class Species {
         let pokemon = new Pokemon(
             data,
             ()=>{this.update();},
+            this.name,
             this.languageCode
         );
         this.varieties[pokemon.name] = pokemon;
