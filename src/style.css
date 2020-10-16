@@ -339,6 +339,10 @@ body {
     background-color: white;
 }
 
+.speciesCard.fill {
+    width: calc(100% - 24px);
+}
+
 .speciesCard.grab {
     margin-left: -4px;
     margin-right: -4px;
@@ -352,6 +356,13 @@ body {
 .speciesTitle {
     margin: 0px 6px 0px 0px;
     float: left;
+}
+
+.speciesTitle.grey {
+    background-color: #cccccc;
+    padding: 6px;
+    margin: -6px 0px -6px 0px;
+    border-radius: 6px;
 }
 
 .speciesInfo {
@@ -448,6 +459,10 @@ body {
 .spritePlaceholder {
     width: 68px;
     height: 56px;
+}
+
+.spritePlaceholder.right {
+    float: right;
 }
 
 .typeIcon {
