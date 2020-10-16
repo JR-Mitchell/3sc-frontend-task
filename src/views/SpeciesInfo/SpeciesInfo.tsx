@@ -84,8 +84,31 @@ class SpeciesInfo extends React.Component<SpeciesProps,SpeciesState> {
             ? variant
             : species.name;
 
+        let variantKeys = Object.keys(species.varieties);
+
         return <Overlay open closeCallback={()=>{this.props.closeCallback();}}>
-            <h2 className="speciesDetailsTitle">{species.name}</h2>
+            <h2 className="speciesDetailsTitle">
+                {species.name}
+                {variantKeys.length > 1 && " (form: "}
+                {variantKeys.length > 1 &&
+                    <select
+                        onChange={(event)=>{
+                            this.setState({variant:event.target.value});
+                        }}
+                    >
+                        {variantKeys.map((key)=>{
+                            return <option
+                                key={key}
+                                value={key}
+                                selected={key===variant}
+                            >
+                                {key}
+                            </option>
+                        })}
+                    </select>
+                }
+                {variantKeys.length > 1 && ")"}
+            </h2>
             <div className="speciesDetailsOuter">
                 <Types {...species.types} />
                 <Biology {...species.biology} />
