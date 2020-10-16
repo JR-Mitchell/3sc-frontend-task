@@ -18,6 +18,7 @@ import { Species } from 'utils/Species';
 import Biology from './Biology';
 import Meta from './Meta';
 import BaseStats from './BaseStats';
+import Types from './Types';
 
 /**
  * Interface for the props of the SpeciesComparison component
@@ -93,6 +94,7 @@ class SpeciesComparison extends React.Component<SpeciesProps,SpeciesState> {
         return <Overlay open closeCallback={()=>{this.props.closeCallback();}}>
             <h2 className="speciesDetailsTitle">{speciesOne.name+" vs "+speciesTwo.name}</h2>
             <div className="speciesDetailsOuter">
+                <Types {...speciesOne.types} {...speciesTwo.types} />
                 <Biology one={{...speciesOne.biology}} two={{...speciesTwo.biology}} oneVariant={speciesOneVariant} twoVariant={speciesTwoVariant}/>
                 <Meta one={{...speciesOne.meta}} two={{...speciesTwo.meta}} oneVariant={speciesOneVariant} twoVariant={speciesTwoVariant}/>
                 <BaseStats

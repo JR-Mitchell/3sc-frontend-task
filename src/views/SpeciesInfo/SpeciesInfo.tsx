@@ -7,9 +7,6 @@ import axios from 'axios';
 //Import from local 'parts'
 import Overlay from 'parts/Overlay';
 
-//Import from local 'components'
-import TypeIcon from 'components/TypeIcon';
-
 //Imports from local 'utils'
 import type { SpeciesInterface } from 'utils/Species';
 import { Species } from 'utils/Species';
@@ -18,6 +15,7 @@ import { Species } from 'utils/Species';
 import Biology from './Biology';
 import Meta from './Meta';
 import BaseStats from './BaseStats';
+import Types from './Types';
 
 /**
  * Interface for the props of the SpeciesInfo component
@@ -80,6 +78,7 @@ class SpeciesInfo extends React.Component<SpeciesProps,SpeciesState> {
         return <Overlay open closeCallback={()=>{this.props.closeCallback();}}>
             <h2 className="speciesDetailsTitle">{species.name}</h2>
             <div className="speciesDetailsOuter">
+                <Types {...species.types} />
                 <Biology {...species.biology} />
                 <Meta {...species.meta} />
                 {species.varieties.hasOwnProperty(species.name) &&
