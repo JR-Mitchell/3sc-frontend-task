@@ -51,6 +51,14 @@ interface SpeciesState {
      */
     speciesTwo: Species;
     /**
+     * Name of variant of first species
+     */
+    variantOne: string;
+    /**
+     * Name of variant of second species
+     */
+    variantTwo: string;
+    /**
      * Sprites for pokemon varieties
      */
     sprites: string[];
@@ -68,6 +76,8 @@ class SpeciesComparison extends React.Component<SpeciesProps,SpeciesState> {
         this.state = {
             speciesOne:new Species(props.speciesOne,()=>{this.forceUpdate();}),
             speciesTwo:new Species(props.speciesTwo,()=>{this.forceUpdate();}),
+            variantOne:"",
+            variantTwo:"",
             sprites:[]
         }
     }
@@ -88,20 +98,70 @@ class SpeciesComparison extends React.Component<SpeciesProps,SpeciesState> {
         let sprites = this.state.sprites.slice();
         let speciesOne = this.state.speciesOne;
         let speciesTwo = this.state.speciesTwo;
-        let speciesOneVariant = Object.keys(speciesOne.varieties)[0]
-        let speciesTwoVariant = Object.keys(speciesTwo.varieties)[0]
+        let variantOne = this.state.variantOne;
+        variantOne = speciesOne.varieties.hasOwnProperty(variantOne)
+            ? variantOne
+            : speciesOne.name;
+        let variantTwo = this.state.variantTwo;
+        variantTwo = speciesTwo.varieties.hasOwnProperty(variantTwo)
+            ? variantTwo
+            : speciesTwo.name;
+        let variantOneKeys = Object.keys(speciesOne.varieties);
+        let variantTwoKeys = Object.keys(speciesTwo.varieties);
 
         return <Overlay open closeCallback={()=>{this.props.closeCallback();}}>
-            <h2 className="speciesDetailsTitle">{speciesOne.name+" vs "+speciesTwo.name}</h2>
+            <h2 className="speciesDetailsTitle">
+                {speciesOne.name}
+                {variantOneKeys.length > 1 && " (form: "}
+                {variantOneKeys.length > 1 &&
+                    <select
+                        onChange={(event)=>{
+                            this.setState({variantOne:event.target.value})
+                        }}
+                    >
+                        {variantOneKeys.map((key)=>{
+                            return <option
+                                key={key}
+                                value={key}
+                                selected={key===variantOne}
+                            >
+                                {key}
+                            </option>
+                        })}
+                    </select>
+                }
+                {variantOneKeys.length > 1 && ")"}
+                {" vs "}
+                {speciesTwo.name}
+                {variantTwoKeys.length > 1 && " (form: "}
+                {variantTwoKeys.length > 1 &&
+                    <select
+                        onChange={(event)=>{
+                            this.setState({variantTwo:event.target.value})
+                        }}
+                    >
+                        {variantTwoKeys.map((key)=>{
+                            return <option
+                                key={key}
+                                value={key}
+                                selected={key===variantTwo}
+                            >
+                                {key}
+                            </option>
+                        })}
+                    </select>
+                }
+                {variantTwoKeys.length > 1 && ")"}
+            </h2>
             <div className="speciesDetailsOuter">
                 <Types {...speciesOne.types} {...speciesTwo.types} />
-                <Biology one={{...speciesOne.biology}} two={{...speciesTwo.biology}} oneVariant={speciesOneVariant} twoVariant={speciesTwoVariant}/>
-                <Meta one={{...speciesOne.meta}} two={{...speciesTwo.meta}} oneVariant={speciesOneVariant} twoVariant={speciesTwoVariant}/>
+                <Biology one={{...speciesOne.biology}} two={{...speciesTwo.biology}} oneVariant={variantOne} twoVariant={variantTwo}/>
+                <Meta one={{...speciesOne.meta}} two={{...speciesTwo.meta}} oneVariant={variantOne} twoVariant={variantTwo}/>
                 <BaseStats
-                    one={{...speciesOne.varieties[speciesOneVariant]?.base_stats}}
-                    two={{...speciesTwo.varieties[speciesTwoVariant]?.base_stats}}
-                    oneVariant={speciesOneVariant}
-                    twoVariant={speciesTwoVariant}
+                    one={{...speciesOne.varieties[variantOne]?.base_stats}}
+                    two={{...speciesTwo.varieties[variantTwo]?.base_stats}}
+                    oneVariant={variantOne}
+                    twoVariant={variantTwo}
                 />
             </div>
         </Overlay>
