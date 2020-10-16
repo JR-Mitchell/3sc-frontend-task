@@ -1,20 +1,17 @@
 //Import from external 'react' module
 import React from 'react';
 
+//Import from local 'components'
+import InfoTable from 'components/InfoTable'
+
 function BaseStats(props:{[key:string]: number}) {
-    return <div className="speciesDetailsGroup">
-        <h3 className="speciesDetailsTitle">Base Stats:</h3>
-        <table className="speciesDetailsTable">
-            <tbody>
-                {Object.entries(props).map((item)=>{
-                    return <tr key={item[0]}>
-                        <th className="speciesDetailsTableCell">{item[0].toUpperCase()+":"}</th>
-                        <td className="speciesDetailsTableCell">{item[1]}</td>
-                    </tr>
-                })}
-            </tbody>
-        </table>
-    </div>
+    let data: {[key:string]: {[subkey: string]:string|number}} = {
+        only: {}
+    }
+    Object.entries(props).forEach((item)=>{
+        data.only[item[0].toUpperCase()] = item[1];
+    });
+    return <InfoTable title="Base Stats" data={{...data}} />
 }
 
 //Default export is React BaseStats component

@@ -4,64 +4,41 @@ import React from 'react';
 //Imports from local 'utils'
 import type { Meta as MetaType } from 'utils/Species';
 
+//Imports from local 'components'
+import InfoTable from 'components/InfoTable';
+
 function Meta(props:MetaType) {
-    let base_experience: React.ReactNode;
+    let data: {[key:string]: string|number} = {
+        "Capture Rate": props.capture_rate,
+        "Base Happiness": props.base_happiness,
+        "Growth Rate": props.growth_rate
+    }
+
     if (props.base_experience) {
         if (typeof props.base_experience !== "number") {
-            base_experience = Object.entries(props.base_experience).map((item)=>{
-                return <tr key={item[0]}>
-                        <th className="speciesDetailsTableCell">{item[0] + " Height:"}</th>
-                        <td className="speciesDetailsTableCell">{item[1]}</td>
-                    </tr>
+            Object.entries(props.base_experience).forEach((item)=>{
+                data[item[0] + " Base Experience"] = item[1];
             })
         } else {
-            base_experience = <tr>
-                    <th className="speciesDetailsTableCell">Base Experience:</th>
-                    <td className="speciesDetailsTableCell">{props.base_experience}</td>
-                </tr>
-
+            data["Base Experience"] = props.base_experience;
         }
     }
 
-    let ev_yields: React.ReactNode;
     if (props.ev_yields) {
         if (typeof props.ev_yields !== "string") {
-            ev_yields = Object.entries(props.ev_yields).map((item)=>{
-                return <tr key={item[0]}>
-                        <th className="speciesDetailsTableCell">{item[0] + " EV Yields:"}</th>
-                        <td className="speciesDetailsTableCell">{item[1]}</td>
-                    </tr>
+            Object.entries(props.ev_yields).forEach((item)=>{
+                data[item[0] + " EV Yields"] = item[1];
             })
         } else {
-            ev_yields = <tr>
-                    <th className="speciesDetailsTableCell">EV Yields:</th>
-                    <td className="speciesDetailsTableCell">{props.ev_yields}</td>
-                </tr>
-
+            data["EV Yields"] = props.ev_yields;
         }
     }
 
-    return <div className="speciesDetailsGroup">
-        <h3 className="speciesDetailsTitle">Metainfo:</h3>
-        <table className="speciesDetailsTable">
-            <tbody>
-                <tr>
-                    <th className="speciesDetailsTableCell">Capture Rate:</th>
-                    <td className="speciesDetailsTableCell">{props.capture_rate}</td>
-                </tr>
-                <tr>
-                    <th className="speciesDetailsTableCell">Base Happiness:</th>
-                    <td className="speciesDetailsTableCell">{props.base_happiness}</td>
-                </tr>
-                <tr>
-                    <th className="speciesDetailsTableCell">Growth Rate:</th>
-                    <td className="speciesDetailsTableCell">{props.growth_rate}</td>
-                </tr>
-                {base_experience}
-                {ev_yields}
-            </tbody>
-        </table>
-    </div>
+    let offData: {[key:string]:{[subkey:string]: string|number}} = {
+        only: data
+    }
+
+    return <InfoTable title="Metainfo:" data={{...offData}}/>
 }
 
 //Default export is React Meta component

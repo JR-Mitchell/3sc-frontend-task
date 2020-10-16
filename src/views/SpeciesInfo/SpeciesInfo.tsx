@@ -40,6 +40,10 @@ interface SpeciesState {
      */
     species: Species;
     /**
+     * Variant to show info for
+     */
+    variant: string;
+    /**
      * Sprites for pokemon varieties
      */
     sprites: string[];
@@ -56,6 +60,7 @@ class SpeciesInfo extends React.Component<SpeciesProps,SpeciesState> {
         super(props);
         this.state = {
             species:new Species(props.species,()=>{this.forceUpdate();}),
+            variant:"",
             sprites:[]
         }
     }
@@ -74,6 +79,10 @@ class SpeciesInfo extends React.Component<SpeciesProps,SpeciesState> {
         //Copy of state variable
         let sprites = this.state.sprites.slice();
         let species = this.state.species;
+        let variant = this.state.variant;
+        variant = species.varieties.hasOwnProperty(variant)
+            ? variant
+            : species.name;
 
         return <Overlay open closeCallback={()=>{this.props.closeCallback();}}>
             <h2 className="speciesDetailsTitle">{species.name}</h2>
@@ -81,8 +90,8 @@ class SpeciesInfo extends React.Component<SpeciesProps,SpeciesState> {
                 <Types {...species.types} />
                 <Biology {...species.biology} />
                 <Meta {...species.meta} />
-                {species.varieties.hasOwnProperty(species.name) &&
-                    <BaseStats {...species.varieties[species.name].base_stats}/>
+                {species.varieties.hasOwnProperty(variant) &&
+                    <BaseStats {...species.varieties[variant].base_stats}/>
                 }
             </div>
         </Overlay>

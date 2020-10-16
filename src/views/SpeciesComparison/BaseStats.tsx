@@ -1,6 +1,9 @@
 //Import from external 'react' module
 import React from 'react';
 
+//Import from local 'components'
+import InfoTable from 'components/InfoTable'
+
 interface BaseStatsProps {
     one: {[key: string]: number},
     two: {[key: string]: number},
@@ -9,41 +12,17 @@ interface BaseStatsProps {
 }
 
 function BaseStats(props:BaseStatsProps) {
-    return <div className="speciesDetailsGroup">
-        <h3 className="speciesDetailsTitle">Base Stats:</h3>
-        <table className="speciesDetailsTable">
-            <tbody>
-                <tr>
-                    <th className="speciesDetailsTableCell">Stat</th>
-                    <th className="speciesDetailsTableCell">{props.oneVariant}</th>
-                    <th className="speciesDetailsTableCell">{props.twoVariant}</th>
-                </tr>
-                {Object.entries(props.one).map((item)=>{
-                    let bonusClassOne = "";
-                    let bonusClassTwo = "";
-                    let valOne = item[1];
-                    let valTwo = props.two[item[0]];
-                    if (typeof valOne === "number" && typeof valTwo === "number") {
-                        if (valOne < valTwo) {
-                            bonusClassOne = " red";
-                            bonusClassTwo = " green";
-                        } else if (valOne > valTwo) {
-                            bonusClassOne = " green";
-                            bonusClassTwo = " red";
-                        } else {
-                            bonusClassOne = " yellow";
-                            bonusClassTwo = " yellow";
-                        }
-                    }
-                    return <tr key={item[0]}>
-                        <th className="speciesDetailsTableCell">{item[0].toUpperCase()+":"}</th>
-                        <td className={"speciesDetailsTableCell"+bonusClassOne}>{item[1]}</td>
-                        <td className={"speciesDetailsTableCell"+bonusClassTwo}>{props.two[item[0]]}</td>
-                    </tr>
-                })}
-            </tbody>
-        </table>
-    </div>
+    let data: {[key:string]:{[subkey:string]:string|number}} = {};
+    data[props.oneVariant] = {};
+    data[props.twoVariant] ={};
+    Object.entries(props.one).forEach((item)=>{
+        data[props.oneVariant][item[0].toUpperCase()] = item[1];
+    });
+    Object.entries(props.two).forEach((item)=>{
+        data[props.twoVariant][item[0].toUpperCase()] = item[1];
+    });
+
+    return <InfoTable compareNumbers title="Base Stats" data={{...data}} />
 }
 
 //Default export is React BaseStats component
