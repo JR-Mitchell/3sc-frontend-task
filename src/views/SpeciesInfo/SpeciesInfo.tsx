@@ -9,6 +9,7 @@ import Overlay from 'parts/Overlay';
 
 //Import from local 'components'
 import Types from 'components/TypeTable';
+import EvolutionChain from 'components/EvolutionChain';
 
 //Imports from local 'utils'
 import type { SpeciesInterface } from 'utils/Species';
@@ -113,6 +114,13 @@ class SpeciesInfo extends React.Component<SpeciesProps,SpeciesState> {
             </h2>
             <div className="speciesDetailsOuter">
                 <Types data={{...species.types}} sprites={{...species.sprites}} />
+                {species.evolution_chain &&
+                    <EvolutionChain
+                        speciesName={species.name}
+                        speciesSpriteURL={species.sprites?.[species.name]}
+                        simpleChains={species.evolution_chain.simpleChains}
+                    />
+                }
                 <Biology {...species.biology} />
                 <Meta {...species.meta} />
                 {species.varieties.hasOwnProperty(variant) &&

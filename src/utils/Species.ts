@@ -5,6 +5,8 @@ import axios from 'axios';
 import type { ReferenceInterface as Reference } from './Reference';
 import type { SpritesInterface as Sprites } from './Sprites';
 import type { PokemonInterface } from './Pokemon';
+import type { EvolutionInterface } from './Evolution';
+import { EvolutionChain } from './Evolution';
 import { Pokemon } from './Pokemon';
 
 /**
@@ -138,6 +140,7 @@ class Species {
     name: string;
     types: {[name:string]: string[]};
     sprites: {[name:string]: string};
+    evolution_chain?: EvolutionChain;
 
     /**
      * Constructor for an instance of Species
@@ -184,6 +187,16 @@ class Species {
                 this.addVariety(response.data);
             })
         }
+        //Get evolution chain
+        axios.get<EvolutionInterface>(data.evolution_chain.url).then((response)=>{
+            this.evolution_chain = new EvolutionChain(
+                data.name,
+                response.data,
+                ()=>{this.updateCallback();},
+                this.languageCode
+            );
+            this.updateCallback();
+        })
     }
 
     /**

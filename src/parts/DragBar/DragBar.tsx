@@ -25,7 +25,7 @@ interface DragBarProps {
     /**
      * Callback to call upon ending a species' drag event
      */
-    dragEndCallback: (index: number)=>void
+    dragEndCallback: (isFav: boolean, index: number)=>void
     /**
      * Callback to call upon clicking the compare button
      */
@@ -69,7 +69,7 @@ function DragBar(props: DragBarProps) {
                         reference={item}
                         dragEndCallback={(event)=>{
                             event.dataTransfer.dropEffect==="none"
-                                && props.dragEndCallback(index);
+                                && props.dragEndCallback(true,index);
                         }}
                     />
                 })}
@@ -89,6 +89,10 @@ function DragBar(props: DragBarProps) {
                         flexGrow
                         key={props.compare[0].name}
                         reference={props.compare[0]}
+                        dragEndCallback={(event)=>{
+                            event.dataTransfer.dropEffect==="none"
+                                && props.dragEndCallback(false,0);
+                        }}
                     />
                     }
                 </div>
@@ -102,6 +106,10 @@ function DragBar(props: DragBarProps) {
                         flexGrow
                         key={props.compare[1].name}
                         reference={props.compare[1]}
+                        dragEndCallback={(event)=>{
+                            event.dataTransfer.dropEffect==="none"
+                                && props.dragEndCallback(false,1);
+                        }}
                     />
                     }
                 </div>

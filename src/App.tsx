@@ -145,7 +145,7 @@ class App extends React.Component<{},AppState> {
                         this.addFavourite(event);
                     }
                 }}
-                dragEndCallback={(index)=>{this.removeFavourite(index);}}
+                dragEndCallback={(isFav,index)=>{isFav ? this.removeFavourite(index) : this.removeCompare(index);}}
                 contents={favourites}
                 compare={compare}
                 compareCallback={()=>{this.openCompare();}}
@@ -271,6 +271,19 @@ class App extends React.Component<{},AppState> {
         this.setState({
             favourites: currFaves
         });
+    }
+
+    /**
+     * Callback to call upon removing a pokemon from a comparison slot
+     */
+    removeCompare(index: number) {
+        if (index === 0 || index === 1) {
+            let compare = this.state.compare.slice();
+            compare[index] = undefined;
+            let compareSpecies = this.state.compareSpecies.slice();
+            compareSpecies[index] = undefined;
+            this.setState({compare:compare,compareSpecies:compareSpecies});
+        }
     }
 
     /**

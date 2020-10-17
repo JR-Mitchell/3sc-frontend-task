@@ -17,7 +17,7 @@ function InfoTable(props:InfoTableProps) {
         return <div className="speciesDetailsGroup">
             <h3 className="speciesDetailsTitle">{props.title}</h3>
             <table className="speciesDetailsTable">
-                <tbody>
+                <thead>
                     {variantNames.length > 1 && <tr>
                             <th className="speciesDetailsTableCell">Category</th>
                             {variantNames.map((name)=>{
@@ -27,6 +27,8 @@ function InfoTable(props:InfoTableProps) {
                             })}
                     </tr>
                     }
+                </thead>
+                <tbody>
                     {Object.keys(props.data[firstVariant]).map((key)=>{
                         let bonusClasses = variantNames.map(()=>"");
                         let keyData = variantNames.map((name)=>props.data[name][key]);
