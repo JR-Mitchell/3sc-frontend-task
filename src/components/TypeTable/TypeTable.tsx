@@ -5,8 +5,9 @@ import React from 'react';
 import TypeIcon from 'components/TypeIcon';
 
 interface TypesProps {
-    data: {[key:string]: string[]},
-    sprites: {[key:string]: string}
+    data: {[id: number]: string[]},
+    names: {[id: number]: string},
+    sprites: {[id: number]: string}
 }
 
 function Types(props:TypesProps) {
@@ -18,7 +19,7 @@ function Types(props:TypesProps) {
                     return <tr key={item[0]}>
                         <td className="speciesCard fill">
                             <h4 className="speciesTitle grey">
-                                {item[0]+":"}
+                                {props.names[item[0]]+":"}
                             </h4>
                             <img className="spritePlaceholder right" src={props.sprites[item[0]]} />
                         </td>

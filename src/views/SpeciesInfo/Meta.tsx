@@ -7,7 +7,11 @@ import type { Meta as MetaType } from 'utils/Species';
 //Imports from local 'components'
 import InfoTable from 'components/InfoTable';
 
-function Meta(props:MetaType) {
+interface MetaProps extends MetaType {
+    names: {[id: number]: string}
+}
+
+function Meta(props:MetaProps) {
     let data: {[key:string]: string|number} = {
         "Capture Rate": props.capture_rate,
         "Base Happiness": props.base_happiness,
@@ -17,7 +21,7 @@ function Meta(props:MetaType) {
     if (props.base_experience) {
         if (typeof props.base_experience !== "number") {
             Object.entries(props.base_experience).forEach((item)=>{
-                data[item[0] + " Base Experience"] = item[1];
+                data[props.names[item[0]] + " Base Experience"] = item[1];
             })
         } else {
             data["Base Experience"] = props.base_experience;
@@ -27,7 +31,7 @@ function Meta(props:MetaType) {
     if (props.ev_yields) {
         if (typeof props.ev_yields !== "string") {
             Object.entries(props.ev_yields).forEach((item)=>{
-                data[item[0] + " EV Yields"] = item[1];
+                data[props.names[item[0]] + " EV Yields"] = item[1];
             })
         } else {
             data["EV Yields"] = props.ev_yields;

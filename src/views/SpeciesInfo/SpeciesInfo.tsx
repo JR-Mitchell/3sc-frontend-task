@@ -45,7 +45,7 @@ interface SpeciesState {
     /**
      * Variant to show info for
      */
-    variant: string;
+    variant: number;
     /**
      * Sprites for pokemon varieties
      */
@@ -63,7 +63,7 @@ class SpeciesInfo extends React.Component<SpeciesProps,SpeciesState> {
         super(props);
         this.state = {
             species:new Species(props.species,()=>{this.forceUpdate();}),
-            variant:"",
+            variant:0,
             sprites:[]
         }
     }
@@ -85,7 +85,7 @@ class SpeciesInfo extends React.Component<SpeciesProps,SpeciesState> {
         let variant = this.state.variant;
         variant = species.varieties.hasOwnProperty(variant)
             ? variant
-            : species.name;
+            : species.id;
 
         let variantKeys = Object.keys(species.varieties);
 
@@ -96,16 +96,16 @@ class SpeciesInfo extends React.Component<SpeciesProps,SpeciesState> {
                 {variantKeys.length > 1 &&
                     <select
                         onChange={(event)=>{
-                            this.setState({variant:event.target.value});
+                            this.setState({variant:Number(event.target.value)});
                         }}
+                        value={variant}
                     >
                         {variantKeys.map((key)=>{
                             return <option
                                 key={key}
                                 value={key}
-                                selected={key===variant}
                             >
-                                {key}
+                                {species.names[key]}
                             </option>
                         })}
                     </select>
@@ -113,16 +113,16 @@ class SpeciesInfo extends React.Component<SpeciesProps,SpeciesState> {
                 {variantKeys.length > 1 && ")"}
             </h2>
             <div className="speciesDetailsOuter">
-                <Types data={{...species.types}} sprites={{...species.sprites}} />
+                <Types data={{...species.types}} names={{...species.names}} sprites={{...species.sprites}} />
                 {species.evolution_chain &&
                     <EvolutionChain
                         speciesName={species.name}
-                        speciesSpriteURL={species.sprites?.[species.name]}
+                        speciesSpriteURL={species.sprites?.[species.id]}
                         simpleChains={species.evolution_chain.simpleChains}
                     />
                 }
-                <Biology {...species.biology} />
-                <Meta {...species.meta} />
+                <Biology {...species.biology} names={{...species.names}}/>
+                <Meta {...species.meta} names={{...species.names}}/>
                 {species.varieties.hasOwnProperty(variant) &&
                     <BaseStats {...species.varieties[variant].base_stats}/>
                 }

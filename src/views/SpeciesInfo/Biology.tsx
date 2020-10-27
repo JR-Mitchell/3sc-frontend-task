@@ -7,9 +7,13 @@ import type { Biology as BiologyType } from 'utils/Species';
 //Imports from local 'components'
 import InfoTable from 'components/InfoTable';
 
-function Biology(props:BiologyType) {
+interface BiologyProps extends BiologyType {
+    names: {[id: number]: string}
+}
+
+function Biology(props:BiologyProps) {
     let data: {[key:string]: string|number} = {
-        Genus: props.genus.genus
+        Genus: props.genus?.genus
     }
     data["Gender Ratio"] = "F: "+props.female_percent.toString()
         + " M: "+props.male_percent.toString()
@@ -18,7 +22,7 @@ function Biology(props:BiologyType) {
     if (props.height) {
         if (typeof props.height !== "number") {
             Object.entries(props.height).forEach((item)=>{
-                data[item[0] + " Height"] = item[1];
+                data[props.names[item[0]] + " Height"] = item[1];
             })
         } else {
             data["Height"] = props.height;
@@ -28,7 +32,7 @@ function Biology(props:BiologyType) {
     if (props.weight) {
         if (typeof props.weight !== "number") {
             Object.entries(props.weight).forEach((item)=>{
-                data[item[0] + " Weight"] = item[1];
+                data[props.names[item[0]] + " Weight"] = item[1];
             })
         } else {
             data["Weight"] = props.weight;

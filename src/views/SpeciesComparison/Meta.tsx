@@ -10,8 +10,9 @@ import InfoTable from 'components/InfoTable';
 interface MetaProps {
     one: MetaType,
     two: MetaType,
-    oneVariant: string,
-    twoVariant: string,
+    oneVariant: number,
+    twoVariant: number,
+    names: {[id: number]: string}
 }
 
 function Meta(props:MetaProps) {
@@ -49,8 +50,8 @@ function Meta(props:MetaProps) {
     }
 
     let offData: {[key:string]:{[subkey:string]:string|number}} = {};
-    offData[props.oneVariant] = {...oneData};
-    offData[props.twoVariant] = {...twoData};
+    offData[props.names[props.oneVariant]] = {...oneData};
+    offData[props.names[props.twoVariant]] = {...twoData};
 
     return <InfoTable title="Metainfo:" data={{...offData}} />
 }

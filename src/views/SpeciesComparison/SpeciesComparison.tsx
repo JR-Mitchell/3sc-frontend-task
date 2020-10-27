@@ -51,13 +51,13 @@ interface SpeciesState {
      */
     speciesTwo: Species;
     /**
-     * Name of variant of first species
+     * ID of variant of first species
      */
-    variantOne: string;
+    variantOne: number;
     /**
-     * Name of variant of second species
+     * ID of variant of second species
      */
-    variantTwo: string;
+    variantTwo: number;
     /**
      * Sprites for pokemon varieties
      */
@@ -76,8 +76,8 @@ class SpeciesComparison extends React.Component<SpeciesProps,SpeciesState> {
         this.state = {
             speciesOne:new Species(props.speciesOne,()=>{this.forceUpdate();}),
             speciesTwo:new Species(props.speciesTwo,()=>{this.forceUpdate();}),
-            variantOne:"",
-            variantTwo:"",
+            variantOne:0,
+            variantTwo:0,
             sprites:[]
         }
     }
@@ -101,11 +101,11 @@ class SpeciesComparison extends React.Component<SpeciesProps,SpeciesState> {
         let variantOne = this.state.variantOne;
         variantOne = speciesOne.varieties.hasOwnProperty(variantOne)
             ? variantOne
-            : speciesOne.name;
+            : speciesOne.id;
         let variantTwo = this.state.variantTwo;
         variantTwo = speciesTwo.varieties.hasOwnProperty(variantTwo)
             ? variantTwo
-            : speciesTwo.name;
+            : speciesTwo.id;
         let variantOneKeys = Object.keys(speciesOne.varieties);
         let variantTwoKeys = Object.keys(speciesTwo.varieties);
 
@@ -116,16 +116,16 @@ class SpeciesComparison extends React.Component<SpeciesProps,SpeciesState> {
                 {variantOneKeys.length > 1 &&
                     <select
                         onChange={(event)=>{
-                            this.setState({variantOne:event.target.value})
+                            this.setState({variantOne:Number(event.target.value)})
                         }}
+                        value={variantOne}
                     >
                         {variantOneKeys.map((key)=>{
                             return <option
                                 key={key}
                                 value={key}
-                                selected={key===variantOne}
                             >
-                                {key}
+                                {speciesOne.names[key]}
                             </option>
                         })}
                     </select>
@@ -137,16 +137,16 @@ class SpeciesComparison extends React.Component<SpeciesProps,SpeciesState> {
                 {variantTwoKeys.length > 1 &&
                     <select
                         onChange={(event)=>{
-                            this.setState({variantTwo:event.target.value})
+                            this.setState({variantTwo:Number(event.target.value)})
                         }}
+                        value={variantTwo}
                     >
                         {variantTwoKeys.map((key)=>{
                             return <option
                                 key={key}
                                 value={key}
-                                selected={key===variantTwo}
                             >
-                                {key}
+                                {speciesTwo.names[key]}
                             </option>
                         })}
                     </select>
@@ -154,14 +154,14 @@ class SpeciesComparison extends React.Component<SpeciesProps,SpeciesState> {
                 {variantTwoKeys.length > 1 && ")"}
             </h2>
             <div className="speciesDetailsOuter">
-                <Types data={{...speciesOne.types,...speciesTwo.types}} sprites={{...speciesOne.sprites,...speciesTwo.sprites}} />
-                <Biology one={{...speciesOne.biology}} two={{...speciesTwo.biology}} oneVariant={variantOne} twoVariant={variantTwo}/>
-                <Meta one={{...speciesOne.meta}} two={{...speciesTwo.meta}} oneVariant={variantOne} twoVariant={variantTwo}/>
+                <Types data={{...speciesOne.types,...speciesTwo.types}} names={{...speciesOne.names, ...speciesTwo.names}} sprites={{...speciesOne.sprites,...speciesTwo.sprites}} />
+                <Biology one={{...speciesOne.biology}} two={{...speciesTwo.biology}} oneVariant={variantOne} twoVariant={variantTwo} names={{...speciesOne.names, ...speciesTwo.names}}/>
+                <Meta one={{...speciesOne.meta}} two={{...speciesTwo.meta}} oneVariant={variantOne} twoVariant={variantTwo} names={{...speciesOne.names, ...speciesTwo.names}}/>
                 <BaseStats
                     one={{...speciesOne.varieties[variantOne]?.base_stats}}
                     two={{...speciesTwo.varieties[variantTwo]?.base_stats}}
-                    oneVariant={variantOne}
-                    twoVariant={variantTwo}
+                    oneName={speciesOne.names[variantOne] || variantOne.toString()}
+                    twoName={speciesTwo.names[variantTwo] || variantTwo.toString()}
                 />
             </div>
         </Overlay>

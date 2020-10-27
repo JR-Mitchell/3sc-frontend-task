@@ -111,8 +111,8 @@ interface Biology {
     genderless_percent: number,
     hatch_time_min?: number,
     hatch_time_max?: number,
-    height?: number | {[key:string]: number},
-    weight?: number | {[key:string]: number},
+    height?: number | {[id:number]: number},
+    weight?: number | {[id:number]: number},
     habitat?: Reference,
 }
 
@@ -132,14 +132,16 @@ interface Meta {
  * Class for processing data about a species
  */
 class Species {
+    id: number;
     biology: Biology;
     meta: Meta;
-    varieties: {[name:string]: Pokemon};
+    varieties: {[id: number]: Pokemon};
     languageCode: string;
     updateCallback: ()=>void;
     name: string;
-    types: {[name:string]: string[]};
-    sprites: {[name:string]: string};
+    names: {[id: number]: string};
+    types: {[id: number]: string[]};
+    sprites: {[id: number]: string};
     evolution_chain?: EvolutionChain;
 
     /**
@@ -151,6 +153,7 @@ class Species {
      *      defaults to "en"
      */
     constructor(data:SpeciesInterface,updateCallback:()=>void,language?:string) {
+        this.id = data.id;
         this.updateCallback = ()=>{updateCallback();}
         //Default language is english
         this.languageCode = language || "en";
@@ -188,15 +191,19 @@ class Species {
             })
         }
         //Get evolution chain
-        axios.get<EvolutionInterface>(data.evolution_chain.url).then((response)=>{
-            this.evolution_chain = new EvolutionChain(
-                data.name,
-                response.data,
-                ()=>{this.updateCallback();},
-                this.languageCode
-            );
-            this.updateCallback();
-        })
+        if (data.evolution_chain?.url) {
+            axios.get<EvolutionInterface>(data.evolution_chain.url).then((response)=>{
+                this.evolution_chain = new EvolutionChain(
+                    data.name,
+                    response.data,
+                    ()=>{this.updateCallback();},
+                    this.languageCode
+                );
+                this.updateCallback();
+            })
+        }
+
+        this.names = {};
     }
 
     /**
@@ -209,7 +216,7 @@ class Species {
             this.name,
             this.languageCode
         );
-        this.varieties[pokemon.name] = pokemon;
+        this.varieties[pokemon.id] = pokemon;
         this.update();
     }
 
@@ -217,62 +224,63 @@ class Species {
      * Updates all information from pokemon varieties
      */
     update() {
-        let newVarieties: {[name:string]: Pokemon} = {};
+        let newVarieties: {[id: number]: Pokemon} = {};
+        let newNames: {[id: number]: string} = {};
         //Heights
-        let heights: {[key:string]: number} = {};
+        let heights: {[id:number]: number} = {};
         let spreadHeights: {[key: number]: string[]} = {};
         //Weights
-        let weights: {[key:string]: number} = {};
+        let weights: {[id:number]: number} = {};
         let spreadWeights: {[key: number]: string[]} = {};
         //Base exp
-        let exps: {[key:string]: number} = {};
+        let exps: {[id:number]: number} = {};
         let spreadExp: {[key: number]: string[]} = {};
         //EV yields
-        let evs: {[key:string]: string} = {};
+        let evs: {[id:number]: string} = {};
         let spreadEvs: {[key: string]: string[]} = {};
         //Types
-        let types: {[key:string]: string[]} = {};
+        let types: {[id:number]: string[]} = {};
         //Sprites
-        let sprites: {[key:string]: string} = {};
-        for (const name in this.varieties) {
-            let newName = this.varieties[name].name;
-            newVarieties[newName] = this.varieties[name];
+        let sprites: {[id:number]: string} = {};
+        for (const id in this.varieties) {
+            newVarieties[id] = this.varieties[id];
+            newNames[id] = this.varieties[id].name;
             //Heights
-            let height = this.varieties[name].biology.height;
+            let height = this.varieties[id].biology.height;
             if (spreadHeights.hasOwnProperty(height)) {
-                spreadHeights[height].push(newName);
+                spreadHeights[height].push(id);
             } else {
-                spreadHeights[height] = [newName];
+                spreadHeights[height] = [id];
             }
-            heights[newName] = height;
+            heights[id] = height;
             //Weights
-            let weight = this.varieties[name].biology.weight;
+            let weight = this.varieties[id].biology.weight;
             if (spreadWeights.hasOwnProperty(weight)) {
-                spreadWeights[weight].push(newName);
+                spreadWeights[weight].push(id);
             } else {
-                spreadWeights[weight] = [newName];
+                spreadWeights[weight] = [id];
             }
-            weights[newName] = weight;
+            weights[id] = weight;
             //Base exp
-            let exp = this.varieties[name].meta.base_experience;
+            let exp = this.varieties[id].meta.base_experience;
             if (spreadExp.hasOwnProperty(exp)) {
-                spreadExp[exp].push(newName);
+                spreadExp[exp].push(id);
             } else {
-                spreadExp[exp] = [newName];
+                spreadExp[exp] = [id];
             }
-            exps[newName] = exp;
+            exps[id] = exp;
             //EV yields
-            let ev = this.varieties[name].meta.ev_yields;
+            let ev = this.varieties[id].meta.ev_yields;
             if (spreadEvs.hasOwnProperty(ev)) {
-                spreadEvs[ev].push(newName);
+                spreadEvs[ev].push(id);
             } else {
-                spreadEvs[ev] = [newName];
+                spreadEvs[ev] = [id];
             }
-            evs[newName] = ev;
+            evs[id] = ev;
             //Types
-            types[newName] = this.varieties[name].types;
+            types[id] = this.varieties[id].types;
             //Sprites
-            sprites[newName] = this.varieties[name].icon_url;
+            sprites[id] = this.varieties[id].icon_url;
         }
         //Heights
         if (Object.keys(spreadHeights).length == 1) {
@@ -303,6 +311,7 @@ class Species {
         //Sprites
         this.sprites = {...sprites};
         this.varieties = {...newVarieties};
+        this.names = {...newNames};
         this.updateCallback();
     }
 }

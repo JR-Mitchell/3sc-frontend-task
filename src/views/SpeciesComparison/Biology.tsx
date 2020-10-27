@@ -10,8 +10,9 @@ import InfoTable from 'components/InfoTable';
 interface BiologyProps {
     one: BiologyType,
     two: BiologyType,
-    oneVariant: string,
-    twoVariant: string
+    oneVariant: number,
+    twoVariant: number
+    names: {[id: number]: string}
 }
 
 function Biology(props:BiologyProps) {
@@ -19,11 +20,11 @@ function Biology(props:BiologyProps) {
     let two = props.two;
 
     let oneData: {[key:string]: string|number} = {
-        Genus: one.genus.genus
+        Genus: one.genus?.genus
     }
 
     let twoData: {[key:string]: string|number} = {
-        Genus: two.genus.genus
+        Genus: two.genus?.genus
     }
 
     oneData["Gender Ratio"] = "F: " + one.female_percent.toString()
@@ -59,8 +60,8 @@ function Biology(props:BiologyProps) {
         + two.hatch_time_max.toString() + " steps";
 
     let offData: {[key:string]:{[subkey:string]:string|number}} = {};
-    offData[props.oneVariant] = {...oneData};
-    offData[props.twoVariant] = {...twoData};
+    offData[props.names[props.oneVariant]] = {...oneData};
+    offData[props.names[props.twoVariant]] = {...twoData};
 
     return <InfoTable title="Biology:" data={{...offData}} />
 }

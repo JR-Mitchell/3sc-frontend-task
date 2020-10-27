@@ -131,6 +131,7 @@ interface Form {
  * Class for processing data about a pokemon
  */
 class Pokemon {
+    id: number;
     name: string;
     biology: Biology;
     meta: Meta;
@@ -148,6 +149,7 @@ class Pokemon {
      */
     constructor(data:PokemonInterface,updateCallback:()=>void,defaultName:string,language:string) {
         this.name = data.name;
+        this.id = data.id;
         this.icon_url = "https://raw.githubusercontent.com/PokeAPI/"
             + "sprites/master/sprites/pokemon/"
             + "versions/generation-viii/icons/"
@@ -182,16 +184,18 @@ class Pokemon {
         })
         this.meta.ev_yields = evYieldsBase.join(", ");
         //Name
-        axios.get<Form>(data.forms[0].url).then((response)=>{
-            this.name = response.data.is_default
-                && !response.data.is_mega
-                && !response.data.is_battle_only
-                ? defaultName
-                : (response.data.form_names.filter(
-                        (item)=>item.language.name === language
-                    )[0]?.name || this.name);
-            updateCallback();
-        })
+        if (data.forms?.[0]?.url) {
+            axios.get<Form>(data.forms[0].url).then((response)=>{
+                this.name = response.data.is_default
+                    && !response.data.is_mega
+                    && !response.data.is_battle_only
+                    ? defaultName
+                    : (response.data.form_names.filter(
+                            (item)=>item.language.name === language
+                        )[0]?.name || this.name);
+                updateCallback();
+            })
+        }
     }
 }
 
