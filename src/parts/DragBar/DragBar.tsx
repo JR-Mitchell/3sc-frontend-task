@@ -47,7 +47,7 @@ interface DragBarProps {
  * may be dragged and dropped for safe keeping
  */
 function DragBar(props: DragBarProps) {
-    return <div className={"dragBarDiv"+props.pos}>
+    return <aside className={"dragBarAside"+props.pos}>
         <div className="dragBarFavDiv">
             <h3 className={"dragBarTitle"+props.pos}>
                 Favourites
@@ -121,7 +121,7 @@ function DragBar(props: DragBarProps) {
                 Compare!
             </button>
         </div>
-    </div>
+    </aside>
 }
 
 //Default export is DragBar component

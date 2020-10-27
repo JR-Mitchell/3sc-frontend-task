@@ -75,7 +75,7 @@ class MenuBar extends React.Component<MenuBarProps,MenuBarState> {
         const generations = this.state.generations.slice();
         const currGen = this.state.currGen;
 
-        return <div className={"menuBarDiv"+pos}>
+        return <nav className={"menuBarNav"+pos}>
             <h3 className={"menuBarTitle"+pos}>Pokemon by Generation</h3>
             {
                 generations.map((item,index)=>{
@@ -128,7 +128,7 @@ class MenuBar extends React.Component<MenuBarProps,MenuBarState> {
                     </Fragment>
                 })
             }
-        </div>
+        </nav>
     }
 
     /**

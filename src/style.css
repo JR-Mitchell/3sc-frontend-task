@@ -106,7 +106,7 @@ body {
 }
 
 /** Right hand dragbar **/
-.dragBarDiv {
+.dragBarAside {
     right: 0;
     width: 0%;
     height: 100vh;
@@ -117,7 +117,7 @@ body {
     flex-direction: column;
 }
 
-.dragBarDiv.right {
+.dragBarAside.right {
     width: 24%;
 }
 
@@ -187,7 +187,7 @@ body {
 }
 
 /** Left hand menubar **/
-.menuBarDiv {
+.menuBarNav {
     background-color: grey;
     float:left;
     width: 0%;
@@ -196,7 +196,7 @@ body {
     transition: width 1s, margin-left 1s;
 }
 
-.menuBarDiv.left {
+.menuBarNav.left {
     width: 24%;
 }
 
