@@ -31,7 +31,7 @@ interface TopBarProps {
  * Contains page title and menu bar button
  */
 function TopBar(props:TopBarProps) {
-    return <div className="topBarDiv">
+    return <>
         <button
             className="topBarMenuIcon"
             onClick={()=>{props.menuCallback();}}
@@ -40,18 +40,20 @@ function TopBar(props:TopBarProps) {
             <div className="topBarMenuIconInner" />
             <div className="topBarMenuIconInner" />
         </button>
-        <h1 className="topBarTitle">
-            PokeAPI Web UI
-        </h1>
         <button
-            className="topBarMenuIcon"
+            className="topBarFavesIcon"
             onClick={()=>{props.favouritesCallback();}}
         >
             <div className={"topBarFavesIconTop"+props.pos} />
             <div className={"topBarFavesIconBottom"+props.pos} />
             <div className="topBarFavesIconCentre" />
         </button>
-    </div>
+        <div className="topBarDiv">
+            <h1 className="topBarTitle">
+                PokeAPI Web UI
+            </h1>
+        </div>
+    </>
 }
 
 //Default export is TopBar component

@@ -27,7 +27,7 @@ body {
 /** Top bar **/
 .topBarDiv {
     background-color: #adec39;
-    margin: 0px 0px 20px 0px;
+    margin: -78px 0px 20px 0px;
     padding: 20px;
     box-shadow: 0px 10px 5px grey;
     display: flex;
@@ -39,10 +39,14 @@ body {
 }
 
 .topBarMenuIcon {
+    position: sticky;
     width: 40px;
     height: 40px;
+    top: 0;
     border-radius: 20px;
-    margin-right: 20px;
+    margin-top: 36px;
+    margin-left: 20px;
+    margin-right: calc(100% - 130px);
     background-color: black;
 }
 
@@ -52,6 +56,16 @@ body {
     padding: 2px 10px 2px 10px;
     margin: 4px auto 4px auto;
     background-color: #adec39;
+}
+
+.topBarFavesIcon {
+    position: sticky;
+    width: 40px;
+    height: 40px;
+    top: 0;
+    border-radius: 20px;
+    right: 20px;
+    background-color: black;
 }
 
 .topBarFavesIconTop {
@@ -79,6 +93,9 @@ body {
     height: 20px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: #cccccc;
     position: relative;
     top: -1px;
     left: -7.5px;
