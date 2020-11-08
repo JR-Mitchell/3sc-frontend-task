@@ -33,6 +33,7 @@ interface MenuBarButtonProps {
 function MenuBarButton(props:MenuBarButtonProps) {
     return <button
         className={"menuBarGenButton"+props.pos}
+        aria-label={"Show all pokemon in "+props.label}
         onClick={()=>{props.callback();}}
     >
         {props.label}

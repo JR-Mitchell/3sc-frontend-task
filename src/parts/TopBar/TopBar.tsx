@@ -35,6 +35,8 @@ function TopBar(props:TopBarProps) {
         <button
             className="topBarMenuIcon"
             onClick={()=>{props.menuCallback();}}
+            aria-label="Main menu"
+            aria-expanded={props.pos.includes("left")}
         >
             <div className="topBarMenuIconInner" />
             <div className="topBarMenuIconInner" />
@@ -43,6 +45,8 @@ function TopBar(props:TopBarProps) {
         <button
             className="topBarFavesIcon"
             onClick={()=>{props.favouritesCallback();}}
+            aria-label="Favourites and comparison side menu"
+            aria-expanded={props.pos.includes("right")}
         >
             <div className={"topBarFavesIconTop"+props.pos} />
             <div className={"topBarFavesIconBottom"+props.pos} />

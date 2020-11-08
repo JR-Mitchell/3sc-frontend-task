@@ -47,7 +47,7 @@ interface DragBarProps {
  * may be dragged and dropped for safe keeping
  */
 function DragBar(props: DragBarProps) {
-    return <aside className={"dragBarAside"+props.pos}>
+    return <aside className={"dragBarAside"+props.pos} role="complementary">
         <div className="dragBarFavDiv">
             <h3 className={"dragBarTitle"+props.pos}>
                 Favourites

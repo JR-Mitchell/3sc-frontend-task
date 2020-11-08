@@ -170,6 +170,7 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
             {sprAddress
                 ? <img
                     src={sprAddress}
+                    alt={"Icon of "+name}
                     className="spritePlaceholder"
                     draggable={false}
                 />
@@ -179,6 +180,7 @@ class Species extends React.Component<SpeciesProps,SpeciesState> {
                 onClick={()=>{
                     this.infoOpen();
                 }}
+                aria-label={"Show more info on "+name}
             >
                 Info
             </button>

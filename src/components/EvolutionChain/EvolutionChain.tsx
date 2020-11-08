@@ -40,7 +40,11 @@ function EvolutionChain(props: EvolutionProps) {
                                 {item.pre.actual_name || item.pre.species.name}
                             </h4>
                             {item.pre.sprite_url
-                                ? <img className="spritePlaceholder right" src={item.pre.sprite_url} />
+                                ? <img
+                                    className="spritePlaceholder right"
+                                    src={item.pre.sprite_url}
+                                    alt={"Icon of "+(item.pre.actual_name || item.pre.species.name)}
+                                />
                                 : <div className="spritePlaceholder right" />
                             }
                         </td>
@@ -49,14 +53,22 @@ function EvolutionChain(props: EvolutionProps) {
                             <h4 className="speciesTitle grey">
                                 {props.speciesName}
                             </h4>
-                            <img className="spritePlaceholder right" src={props.speciesSpriteURL} />
+                            <img
+                                className="spritePlaceholder right"
+                                src={props.speciesSpriteURL}
+                                alt={"Icon of "+props.speciesName}
+                            />
                         </td>
                         {item.post && <td className="speciesCard">
                             <h4 className="speciesTitle grey">
                                 {item.post.actual_name || item.post.species.name}
                             </h4>
                             {item.post.sprite_url
-                                ? <img className="spritePlaceholder right" src={item.post.sprite_url} />
+                                ? <img
+                                    className="spritePlaceholder right"
+                                    src={item.post.sprite_url}
+                                    alt={"Icon of "+(item.post.actual_name || item.post.species.name)}
+                                />
                                 : <div className="spritePlaceholder right" />
                             }
                         </td>

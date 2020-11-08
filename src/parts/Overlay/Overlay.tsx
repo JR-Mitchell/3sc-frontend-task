@@ -24,7 +24,7 @@ interface OverlayProps {
  */
 function Overlay(props:OverlayProps) {
     if (props.open) {
-        return <div className="overlayOuter" onClick={(event)=>{
+        return <div className="overlayOuter" role="dialog" aria-modal="true" onClick={(event)=>{
             let target = event.target as HTMLInputElement
             if (target.classList?.[0] === "overlayOuter") {
                 props.closeCallback();

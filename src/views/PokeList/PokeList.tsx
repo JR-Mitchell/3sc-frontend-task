@@ -50,6 +50,7 @@ function PokeList(props:ListProps){
             return <Element key={"AlphaOuter"+char} name={"AlphaElem-"+char}>
                 <h3
                     className="speciesListAlphaTitle"
+                    aria-label={"Pokemon whose names begin with "+char}
                 >
                     {char.toUpperCase()}
                 </h3>

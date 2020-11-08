@@ -21,7 +21,11 @@ function Types(props:TypesProps) {
                             <h4 className="speciesTitle grey">
                                 {props.names[item[0]]+":"}
                             </h4>
-                            <img className="spritePlaceholder right" src={props.sprites[item[0]]} />
+                            <img
+                                className="spritePlaceholder right"
+                                src={props.sprites[item[0]]}
+                                alt={"Icon of "+props.names[item[0]]}
+                            />
                         </td>
                         <td className="speciesDetailsTableCell">
                             {item[1].map((type)=>{

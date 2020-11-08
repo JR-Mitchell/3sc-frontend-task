@@ -115,7 +115,7 @@ class App extends React.Component<{},AppState> {
                 }
                 scrollSections={scrollSections}
             />
-            <div className={"mainBody"+bodyPos}>
+            <main className={"mainBody"+bodyPos}>
                 <TopBar
                     menuCallback={()=>{
                         this.toggleLeft();
@@ -135,7 +135,7 @@ class App extends React.Component<{},AppState> {
                         this.tempDisableRight();
                     }}
                 />
-            </div>
+            </main>
             <DragBar
                 pos={bodyPos}
                 dropCallback={(event,index?:number)=>{
