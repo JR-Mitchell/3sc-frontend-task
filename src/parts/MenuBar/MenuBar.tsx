@@ -1,181 +1,84 @@
 //Import from external 'react' module
-import React from 'react';
-import { Fragment } from 'react';
+import React, { Fragment } from 'react';
 
-//Import from external 'axios' module
-import axios from 'axios';
+//Import from external 'react-redux' module
+import { useSelector, useDispatch } from 'react-redux';
+
+//Import from external 'react-router' module
+import { useHistory, useLocation, Link as RouteLink } from 'react-router-dom';
 
 //Import from external 'react-scroll' module
-import { Link } from 'react-scroll';
+import { Link as ScrollLink } from 'react-scroll';
 
-//Imports from local 'utils'
-import type { GenerationInterface } from 'utils/Generation';
-import type { ReferenceInterface } from 'utils/Reference';
+//Import from local 'utils' folder
+import getLocalisedName from 'utils/Names';
 
-//Local component imports
-import BarButton from './BarButton';
+//Import from local 'actions' folder
+import { setGeneration } from 'actions/pokelist';
 
-/**
- * Interface for props of the MenuBar component
- */
-interface MenuBarProps {
-    /**
-     * Position string for working out css classname
-     */
-    pos: string
-    /**
-     * Callback for the generation buttons
-     */
-    generationCallback: (pokemon: ReferenceInterface[],title:string) => void
-    /**
-     * Name of scroll sections to create links for
-     */
-    scrollSections: string[]
+//Import from local 'reducers' folder
+import { SidebarStateInterface, GenerationsStateInterface, PokelistStateInterface, TotalStateInterface } from 'reducers';
+
+function Button(props:React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) {
+    return <button {...props} />
 }
 
 /**
- * Interface for state of the MenuBar component
- */
-interface MenuBarState {
-    /**
-     * Array containing information about each generation
-     */
-    generations: GenerationInterface[]
-    /**
-     * The currently selected generation, if any
-     */
-    currGen?: number
-}
-
-/**
- * MenuBar component at top of page
+ * MenuBar component - side nav element
  * Contains buttons for each generation of pokemon
- * Each button displays the pokemon of that gen
+ * Each button redirects router to that generation,
+ * and provides scroll link elements for generation headers
  */
-class MenuBar extends React.Component<MenuBarProps,MenuBarState> {
-    /**
-     * React constructor method
-     */
-    constructor(props) {
-        super(props);
-        this.state = {generations:[]};
-        //For quickly loading generations which we know exist
-        const curr_gen_number = 8;
-        for (let i=1; i<curr_gen_number; i++) {
-            this.getNextGeneration(i,false);
+function MenuBar(props: {}) {
+    const dispatch = useDispatch();
+    const classNameMod: SidebarStateInterface = useSelector((state: TotalStateInterface) => state.sidebar);
+    const generationList: GenerationsStateInterface = useSelector((state: TotalStateInterface) => state.generationList);
+    const pokeList: PokelistStateInterface = useSelector((state: TotalStateInterface) => state.pokeList);
+    const pathname = useLocation().pathname;
+    const location = pathname.split("/").splice(0,3).join("/");
+    let history = useHistory();
+    if (location !== pokeList.locationHandle) {
+        let validGeneration = generationList.filter(item=>"/generation/"+item.name === location);
+        if (validGeneration.length > 0) {
+            dispatch<any>(setGeneration(validGeneration[0]));
         }
-        this.getNextGeneration(curr_gen_number,true);
     }
-
-    /**
-     * React render method
-     */
-    render() {
-        const pos = this.props.pos;
-        const generations = this.state.generations.slice();
-        const currGen = this.state.currGen;
-
-        return <nav className={"menuBarNav"+pos}>
-            <h3 className={"menuBarTitle"+pos}>Pokemon by Generation</h3>
-            {
-                generations.map((item,index)=>{
-                    item.pokemon_species.sort((a,b)=>{
-                        return a.name < b.name ? -1 : 1;
-                    });
-                    //Format name nicely
-                    let nameParts: string[] = item.name.split("-");
-                    let front = nameParts[0]
-                        && nameParts[0].charAt(0).toUpperCase()
-                            + nameParts[0].substr(1);
-                    let back = nameParts[1].toUpperCase();
-                    let prettyNameParts: string[] = [];
-                    front && prettyNameParts.push(front);
-                    back && prettyNameParts.push(back);
-                    const prettyName = prettyNameParts.join(" ");
-
-                    return <Fragment key={item.name}>
-                        <BarButton
-                            label={prettyName}
-                            gen={item}
-                            callback={()=>{
-                                this.props.generationCallback(
-                                    item.pokemon_species,
-                                    prettyName
-                                );
-                                this.setState({currGen:index})
-                            }}
-                            pos={pos}
-                        />
-                        {index===currGen &&
-                            <div className={"menuBarContents"+pos}>
-                            {this.props.scrollSections.map((name)=>{
-                                return <Link
-                                    to={"AlphaElem-"+name}
-                                    key={name}
-                                    className={"menuBarLink"+pos}
-                                    activeClass={"menuBarLink active"+pos}
-                                    spy={true}
-                                    smooth={true}
-                                    duration={(dist)=>{
-                                        return 0.45*Math.abs(dist);
-                                    }}
+    return <nav className={"menu-bar"+classNameMod}>
+        <h3 className={"menu-bar__title"+classNameMod}>
+            Pokemon by Generation:
+        </h3>
+        {generationList.map((item,index)=>{
+            return <Fragment key={item.name}>
+                <RouteLink
+                    to={"/generation/"+item.name}
+                    onClick={()=>{dispatch<any>(setGeneration(item));}}
+                    className={"menu-bar__category-button"+classNameMod}
+                    aria-label={"Show all pokemon in "+item.name}
+                >
+                    {getLocalisedName(item,"en")}
+                </RouteLink>
+                {location === "/generation/"+item.name &&
+                    <ul role="group" className={"menu-bar__category-contents"+classNameMod}>
+                        {pokeList.binnedOrder.map((key)=>{
+                            return <li role="menuitem" key={key}>
+                                <ScrollLink role="menuitem" key={key}
+                                    to={"category-title-"+key}
+                                    smooth
+                                    spy
+                                    onSetActive={()=>{history.replace(pathname+"#category-title-"+key)}}
+                                    activeClass={"menu-bar__category-contents__scroll-button active"+classNameMod}
+                                    className={"menu-bar__category-contents__scroll-button"+classNameMod}
+                                    aria-label={"Scroll to pokemon whose names begin with the letter "+key}
                                 >
-                                    {name.toUpperCase()}
-                                </Link>
-                            })}
-                        </div>
-                        }
-                    </Fragment>
-                })
-            }
-        </nav>
-    }
-
-    /**
-     * Makes a GET request to pokeapi for generation of a specific
-     * number, adding to state.generations.
-     * The option searchAbove will recursively search for newer gens
-     * than the current one, so that future generations will not be missed.
-     *
-     * @param {number} genNum: The number of the generation to GET
-     * @param {boolean} searchAbove: whether to start a recursive search
-     *      for newer generations
-     */
-    getNextGeneration(genNum:number,searchAbove:boolean) {
-        axios.get<GenerationInterface>(
-           "https://pokeapi.co/api/v2/generation/"+genNum.toString()
-        ).then(
-            (response) => {
-                this.setState((state,props)=>{
-                    //Add the generation
-                    let generations = state.generations
-                        .concat([response.data]);
-                    //Sort by id
-                    generations.sort((a,b)=>{return a.id - b.id});
-                    //Recursive searching for newer gens
-                    if (searchAbove) {
-                        this.getNextGeneration(genNum+1,true);
-                    }
-                    return {
-                        generations:generations
-                    };
-                });
-            }
-        ).catch((error)=>{
-            if (searchAbove && error.response.status == 404) {
-                //404 called if no such generation exists
-                console.log(
-                    "Making the assumption that no generation "
-                    + genNum.toString()
-                    + " has been released... yet"
-                );
-            } else {
-                throw error;
-            }
-        })
-    }
-
+                                    {key.toUpperCase()}
+                                </ScrollLink>
+                            </li>
+                        })}
+                    </ul>
+                }
+            </Fragment>
+        })}
+    </nav>
 }
 
-//Default export is MenuBar component
 export default MenuBar;

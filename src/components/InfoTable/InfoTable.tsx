@@ -14,14 +14,14 @@ function InfoTable(props:InfoTableProps) {
     let variantNames = Object.keys(props.data);
     let firstVariant = variantNames[0]
     if (firstVariant) {
-        return <div className="speciesDetailsGroup">
-            <h3 className="speciesDetailsTitle">{props.title}</h3>
-            <table className="speciesDetailsTable">
+        return <div className="info-overlay__details-group">
+            <h3 className="info-overlay__details-group__title">{props.title}</h3>
+            <table className="info-overlay__details-group__table">
                 <thead>
                     {variantNames.length > 1 && <tr>
-                            <th className="speciesDetailsTableCell">Category</th>
+                            <th className="info-overlay__details-group__table-cell">Category</th>
                             {variantNames.map((name)=>{
-                                return <th className="speciesDetailsTableCell" key={name}>
+                                return <th className="info-overlay__details-group__table-cell" key={name}>
                                     {name}
                                 </th>
                             })}
@@ -44,9 +44,9 @@ function InfoTable(props:InfoTableProps) {
                             bonusClasses = keyData.map((val)=>val === maxVal ? goodClassName : " red");
                         }
                         return <tr key={key}>
-                            <th className="speciesDetailsTableCell">{key+":"}</th>
+                            <th className="info-overlay__details-group__table-cell">{key+":"}</th>
                             {variantNames.map((name,index)=>{
-                                return <td className={"speciesDetailsTableCell"+bonusClasses[index]} key={name}>
+                                return <td className={"info-overlay__details-group__table-cell"+bonusClasses[index]} key={name}>
                                     {props.data[name][key]}
                                 </td>
                             })}

@@ -1,3 +1,6 @@
+import type { PokemonInterface } from './Pokemon';
+import type { FormInterface } from './Forms';
+
 /**
  * Simple interface for sprites collection
  */
@@ -11,5 +14,11 @@ interface SpritesInterface {
     front_shiny: string | null,
     front_shiny_female: string | null,
 }
+
+function getVarietySprite(poke: PokemonInterface, form?: FormInterface) {
+    return form?.sprites?.front_default || poke?.sprites?.front_default || undefined;
+}
+
+export default getVarietySprite;
 
 export type { SpritesInterface };
