@@ -39,6 +39,7 @@ interface SpeciesCardProps {
  */
 function SpeciesCard(props: SpeciesCardProps) {
     const classNameMod: SidebarStateInterface = useSelector((state: TotalStateInterface) => state.sidebar);
+    const languageCode: string = useSelector((state: TotalStateInterface) => state.language).currentLanguage;
     const dispatch = useDispatch();
     const location = useLocation().pathname.split("/").splice(0,3).join("/");
     return <div
@@ -55,7 +56,7 @@ function SpeciesCard(props: SpeciesCardProps) {
         }}
     >
         <h4 className={"species-card__title"+classNameMod}>
-            {"#"+props.species.id.toString()+" "+getLocalisedName(props.species,"en")}
+            {"#"+props.species.id.toString()+" "+getLocalisedName(props.species,languageCode)}
         </h4>
         <div>
             <img

@@ -11,12 +11,13 @@ import type { ThunkAction } from 'redux-thunk';
 import type { GenerationInterface } from 'utils/Generation';
 import type { SpeciesInterface } from 'utils/Species';
 
-const setGeneration: ActionCreator<ThunkAction<void,{},unknown,Action<string>>> = (gen: GenerationInterface) => async dispatch => {
+const setGeneration: ActionCreator<ThunkAction<void,{},unknown,Action<string>>> = (gen: GenerationInterface, languageCode: string) => async dispatch => {
     dispatch({
         type: "SET_POKEMON_LIST",
         payload: {
             list: [],
-            locationHandle: "/generation/"+gen.name
+            locationHandle: "/generation/"+gen.name,
+            languageCode: languageCode
         }
     });
     const promises = gen.pokemon_species.map((item)=>{return axios.get<SpeciesInterface>(item.url);});
@@ -25,7 +26,8 @@ const setGeneration: ActionCreator<ThunkAction<void,{},unknown,Action<string>>> 
             type: "SET_POKEMON_LIST",
             payload: {
                 list: results.filter(item=>item.status === "fulfilled").map((item)=>item.status === "fulfilled" && item.value.data),
-                locationHandle: "/generation/"+gen.name
+                locationHandle: "/generation/"+gen.name,
+                languageCode: languageCode
             }
         });
     });

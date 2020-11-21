@@ -4,6 +4,8 @@ import { combineReducers } from 'redux';
 //Imports from local directory
 import sidebarReducer from './sidebar';
 import type { SidebarStateInterface } from './sidebar';
+import languageReducer from './languages';
+import type { LanguageStateInterface } from './languages';
 import generationReducer from './generations';
 import type { GenerationsStateInterface } from './generations';
 import pokelistReducer from './pokelist';
@@ -21,6 +23,7 @@ import type { EvolutionStateInterface } from './evolution';
 
 const reducer = combineReducers({
     sidebar: sidebarReducer,
+    language: languageReducer,
     generationList: generationReducer,
     pokeList: pokelistReducer,
     favourites: favouritesReducer,
@@ -32,6 +35,7 @@ const reducer = combineReducers({
 
 interface TotalStateInterface {
     sidebar: SidebarStateInterface,
+    language: LanguageStateInterface,
     generationList: GenerationsStateInterface,
     pokeList: PokelistStateInterface,
     favourites: FavouritesStateInterface,
@@ -45,6 +49,7 @@ export default reducer;
 
 export type {
     SidebarStateInterface,
+    LanguageStateInterface,
     GenerationsStateInterface,
     PokelistStateInterface,
     FavouritesStateInterface,

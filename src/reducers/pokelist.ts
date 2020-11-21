@@ -9,7 +9,8 @@ interface pokemonSetAction {
     type: "SET_POKEMON_LIST",
     payload: {
         list: SpeciesInterface[],
-        locationHandle: string
+        locationHandle: string,
+        languageCode: string
     }
 }
 
@@ -45,7 +46,7 @@ const pokelistReducer = (state: PokelistStateInterface=initialState, action: pok
             locationHandle: action.payload.locationHandle
         }
         newState.rawList.forEach((item)=>{
-            let firstChar = getLocalisedName(item,"en").charAt(0);
+            let firstChar = getLocalisedName(item,action.payload.languageCode).charAt(0);
             if (newState.binnedList.hasOwnProperty(firstChar)) {
                 newState.binnedList[firstChar].push(item);
             } else {

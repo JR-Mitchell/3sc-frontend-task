@@ -9,10 +9,14 @@ import getLocalisedGenus from 'utils/Species';
 //Import from local 'components' directory
 import InfoTable from 'components/InfoTable';
 
+//Import from local 'reducers' directory
+import type { TotalStateInterface } from 'reducers';
+
 interface MetaProps {
     species: SpeciesInterface[],
     varieties: PokemonInterface[],
-    names: string[]
+    names: string[],
+    languageCode: string
 }
 
 function MetaTable(props: MetaProps) {
@@ -21,7 +25,7 @@ function MetaTable(props: MetaProps) {
         const pokeName = props.names[index];
         const poke = props.varieties[index];
         data[pokeName] = {
-            Genus: getLocalisedGenus(species,"en"),
+            Genus: getLocalisedGenus(species,props.languageCode),
             "Gender Ratio": (species.gender_rate && species.gender_rate !== -1)
                 ? "Female: "+(12.5*species.gender_rate).toString()+"% Male: "+(100-(12.5*species.gender_rate)).toString()+"%"
                 : "Genderless: 100%",

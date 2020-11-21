@@ -21,6 +21,7 @@ import reducer from 'reducers';
 
 //Import from local 'actions' directory
 import { addGeneration } from 'actions/generations';
+import { setLanguageList } from 'actions/languages';
 
 //Imports from local 'parts' directory
 import {TopBar, MenuBar, DragBar, PokeList, Info} from 'parts';
@@ -33,6 +34,7 @@ function App(props) {
         store.dispatch<any>(addGeneration(i,false))
     }
     store.dispatch<any>(addGeneration(curr_gen_number,true));
+    store.dispatch<any>(setLanguageList());
     return <Provider store={store}>
         <BrowserRouter>
             <MenuBar />

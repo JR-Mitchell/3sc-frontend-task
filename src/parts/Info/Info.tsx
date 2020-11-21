@@ -31,6 +31,7 @@ import EvolutionChain from './Evolution';
  * may be dragged and dropped for safe keeping
  */
 function Info(props: {}) {
+    const languageCode: string = useSelector((state: TotalStateInterface) => state.language).currentLanguage;
     const species = useSelector((state: TotalStateInterface) => state.speciesInfo);
     const varieties = useSelector((state: TotalStateInterface) => state.varietiesInfo);
     const forms = useSelector((state: TotalStateInterface) => state.formsInfo);
@@ -84,9 +85,9 @@ function Info(props: {}) {
     const relevantNames = relevantVarieties.map((item,index)=>{
         const form = relevantForms[index];
         if (form === "LOADING") {
-            return getVarietyName(item,"en");
+            return getVarietyName(item,languageCode);
         }
-        return getVarietyName(item,"en",form);
+        return getVarietyName(item,languageCode,form);
     });
     const relevantSprites = relevantVarieties.map((item,index)=>{
         const form = relevantForms[index];
@@ -106,9 +107,9 @@ function Info(props: {}) {
         const formList = formChoices[index];
         return item.map((poke,innerIndex)=>{
             if (formList[innerIndex] === "LOADING") {
-                return getVarietyName(poke,"en");
+                return getVarietyName(poke,languageCode);
             }
-            return getVarietyName(poke,"en",formList[innerIndex]);
+            return getVarietyName(poke,languageCode,formList[innerIndex]);
         });
     });
     return <div className="info-overlay" role="dialog" aria-modal="true">
@@ -117,9 +118,9 @@ function Info(props: {}) {
                 ? <>
                     <h2 className="info-overlay__title">
                         {relevantSpecies.map((item,index)=>
-                            getLocalisedName(item,"en")
-                            ? <Fragment key={getLocalisedName(item,"en")}>
-                                {"#"+(item.id?.toString()||"???")+" "+getLocalisedName(item,"en")}
+                            getLocalisedName(item,languageCode)
+                            ? <Fragment key={getLocalisedName(item,languageCode)}>
+                                {"#"+(item.id?.toString()||"???")+" "+getLocalisedName(item,languageCode)}
                                 {varietyChoices[index].length > 1 && <>
                                     {" (Form: "}
                                     <select
@@ -162,6 +163,7 @@ function Info(props: {}) {
                                     varieties={varieties}
                                     chains={evolutionChains}
                                     forms={forms}
+                                    languageCode={languageCode}
                                 />}
                                 <TypeTable
                                     varieties={relevantVarieties}
@@ -172,6 +174,7 @@ function Info(props: {}) {
                                     species={relevantSpecies}
                                     varieties={relevantVarieties}
                                     names={relevantNames}
+                                    languageCode={languageCode}
                                 />
                                 <Meta
                                     species={relevantSpecies}

@@ -18,7 +18,8 @@ interface EvolutionProps {
     species: SpeciesStateInterface,
     forms: FormStateInterface,
     chains: EvolutionStateInterface,
-    id: number
+    id: number,
+    languageCode: string
 }
 
 interface RowWidthItem {
@@ -76,13 +77,13 @@ function EvolutionChain(props: EvolutionProps) {
                                 return <td className="cell-species-card" colSpan={cell.colSpan} key={"evolution-row-"+index+"-id-"+cell.id}>
                                     <h4 className="species-card__title grey">
                                         {
-                                            (cell.species && getLocalisedName(cell.species,"en"))
+                                            (cell.species && getLocalisedName(cell.species,props.languageCode))
                                             || cell.id
                                         }
                                     </h4>
                                     {cell.pokemon && <img
                                         src={cell.form ? getVarietySprite(cell.pokemon,cell.form) : getVarietySprite(cell.pokemon)}
-                                        alt={"Front facing sprite of "+(getLocalisedName(cell.species,"en"))}
+                                        alt={"Front facing sprite of "+(getLocalisedName(cell.species,props.languageCode))}
                                     />}
                                 </td>
                             })}

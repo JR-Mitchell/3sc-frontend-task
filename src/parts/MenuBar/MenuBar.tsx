@@ -15,9 +15,10 @@ import getLocalisedName from 'utils/Names';
 
 //Import from local 'actions' folder
 import { setGeneration } from 'actions/pokelist';
+import { setLanguageCode } from 'actions/languages';
 
 //Import from local 'reducers' folder
-import { SidebarStateInterface, GenerationsStateInterface, PokelistStateInterface, TotalStateInterface } from 'reducers';
+import { SidebarStateInterface, GenerationsStateInterface, PokelistStateInterface, LanguageStateInterface, TotalStateInterface } from 'reducers';
 
 function Button(props:React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) {
     return <button {...props} />
@@ -31,6 +32,8 @@ function Button(props:React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLBut
  */
 function MenuBar(props: {}) {
     const dispatch = useDispatch();
+    const languageInfo: LanguageStateInterface = useSelector((state: TotalStateInterface) => state.language);
+    const languageCode: string = languageInfo.currentLanguage;
     const classNameMod: SidebarStateInterface = useSelector((state: TotalStateInterface) => state.sidebar);
     const generationList: GenerationsStateInterface = useSelector((state: TotalStateInterface) => state.generationList);
     const pokeList: PokelistStateInterface = useSelector((state: TotalStateInterface) => state.pokeList);
@@ -40,7 +43,7 @@ function MenuBar(props: {}) {
     if (location !== pokeList.locationHandle) {
         let validGeneration = generationList.filter(item=>"/generation/"+item.name === location);
         if (validGeneration.length > 0) {
-            dispatch<any>(setGeneration(validGeneration[0]));
+            dispatch<any>(setGeneration(validGeneration[0],languageCode));
         }
     }
     return <nav className={"menu-bar"+classNameMod}>
@@ -51,11 +54,11 @@ function MenuBar(props: {}) {
             return <Fragment key={item.name}>
                 <RouteLink
                     to={"/generation/"+item.name}
-                    onClick={()=>{dispatch<any>(setGeneration(item));}}
+                    onClick={()=>{dispatch<any>(setGeneration(item,languageCode));}}
                     className={"menu-bar__category-button"+classNameMod}
                     aria-label={"Show all pokemon in "+item.name}
                 >
-                    {getLocalisedName(item,"en")}
+                    {getLocalisedName(item,languageCode)}
                 </RouteLink>
                 {location === "/generation/"+item.name &&
                     <ul role="group" className={"menu-bar__category-contents"+classNameMod}>
@@ -78,6 +81,20 @@ function MenuBar(props: {}) {
                 }
             </Fragment>
         })}
+        <h3 className={"menu-bar__title"+classNameMod}>
+            Pokemon localisation language:
+        </h3>
+        <select
+            className={"menu-bar__title"}
+            onChange={(event)=>{dispatch(setLanguageCode(event.target.value))}}
+            value={languageCode}
+        >
+            {Object.entries(languageInfo.languageList).map(item=>{
+                return <option key={item[0]} value={item[0]}>
+                    {getLocalisedName(item[1],item[0]) + " (" + getLocalisedName(item[1],languageCode)+")"}
+                </option>
+            })}
+        </select>
     </nav>
 }
 
