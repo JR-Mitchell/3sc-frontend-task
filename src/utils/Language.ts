@@ -3,7 +3,7 @@ import type { ReferenceInterface as Reference } from './Reference'
 
 interface Name {
     name: string,
-    language: ReferenceInterface
+    language: Reference
 }
 
 /**

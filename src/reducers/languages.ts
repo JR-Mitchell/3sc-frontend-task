@@ -29,7 +29,7 @@ const languageReducer = (state: LanguageStateInterface={currentLanguage:"en",lan
             };
         case "SET_LANGUAGE_LIST":
             return {
-                currentLanguage: state.languageList,
+                currentLanguage: state.currentLanguage,
                 languageList: action.payload
             };
         default:

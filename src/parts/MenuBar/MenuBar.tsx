@@ -91,7 +91,7 @@ function MenuBar(props: {}) {
         >
             {Object.entries(languageInfo.languageList).map(item=>{
                 return <option key={item[0]} value={item[0]}>
-                    {getLocalisedName(item[1],item[0]) + " (" + getLocalisedName(item[1],languageCode)+")"}
+                    {item[0]===languageCode ? getLocalisedName(item[1],languageCode) : getLocalisedName(item[1],languageCode) + " (" + getLocalisedName(item[1],item[0])+")"}
                 </option>
             })}
         </select>
