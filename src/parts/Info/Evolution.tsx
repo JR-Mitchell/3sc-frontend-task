@@ -5,13 +5,14 @@ import React from 'react';
 import type { SpeciesStateInterface, VarietyStateInterface, FormStateInterface, EvolutionStateInterface } from 'reducers';
 
 //Import from local 'utils' directory
-import type { ChainLink } from 'utils/Evolution';
+import type { ChainLink, EvolutionDetail } from 'utils/Evolution';
 import type { SpeciesInterface } from 'utils/Species';
 import type { PokemonInterface } from 'utils/Pokemon';
 import type { FormInterface } from 'utils/Forms';
 import getLocalisedName from 'utils/Names';
 import getVarietyName from 'utils/Forms';
 import getVarietySprite from 'utils/Sprites';
+import getEvolutionText from 'utils/Evolution';
 
 interface EvolutionProps {
     varieties: VarietyStateInterface,
@@ -27,7 +28,8 @@ interface RowWidthItem {
     colSpan: number,
     species?: SpeciesInterface,
     pokemon?: PokemonInterface,
-    form?: FormInterface
+    form?: FormInterface,
+    detail: EvolutionDetail[]
 }
 
 function EvolutionChain(props: EvolutionProps) {
@@ -42,7 +44,8 @@ function EvolutionChain(props: EvolutionProps) {
             lowerChainLengths.forEach(item=>{totalLength += item});
             let thisInfo: RowWidthItem = {
                 id: parseInt(thisID),
-                colSpan: totalLength
+                colSpan: totalLength,
+                detail: link.evolution_details
             }
             const thisSpecies = props.species[thisInfo.id];
             if (thisSpecies && thisSpecies !== "LOADING") {
@@ -85,6 +88,11 @@ function EvolutionChain(props: EvolutionProps) {
                                         src={cell.form ? getVarietySprite(cell.pokemon,cell.form) : getVarietySprite(cell.pokemon)}
                                         alt={"Front facing sprite of "+(getLocalisedName(cell.species,props.languageCode))}
                                     />}
+                                    {cell.detail.map((item,index)=>
+                                        <div key={"evolution-detail-"+index.toString()}>
+                                            {getEvolutionText(item)}
+                                        </div>
+                                    )}
                                 </td>
                             })}
                         </tr>

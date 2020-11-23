@@ -341,6 +341,7 @@ body {
     border-radius: 5px;
     border-style: solid;
     background-color: white;
+    vertical-align: top;
 }
 
 .species-card.fill {
