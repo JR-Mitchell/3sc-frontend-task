@@ -23,12 +23,15 @@ import reducer from 'reducers';
 import { addGeneration } from 'actions/generations';
 import { setLanguageList } from 'actions/languages';
 
+//Import from local 'utils' directory
+import { localStorageMiddleware, retrieveFavouritesState } from 'utils/Storage';
+
 //Imports from local 'parts' directory
 import {TopBar, MenuBar, DragBar, PokeList, Info} from 'parts';
 
 function App(props) {
-    const middleware = [thunk];
-    const store = createStore(reducer,{},applyMiddleware(...middleware));
+    const middleware = [thunk, localStorageMiddleware];
+    const store = createStore(reducer,retrieveFavouritesState(),applyMiddleware(...middleware));
     const curr_gen_number = 8;
     for (let i=1; i<curr_gen_number; i++) {
         store.dispatch<any>(addGeneration(i,false))
