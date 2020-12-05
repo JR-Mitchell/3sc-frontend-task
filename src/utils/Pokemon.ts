@@ -1,6 +1,3 @@
-//Imports from external 'axios' module
-import axios from 'axios';
-
 //Import from utils
 import type { ReferenceInterface as Reference } from './Reference';
 import type { SpritesInterface as Sprites } from './Sprites';
@@ -104,79 +101,4 @@ interface PokemonInterface {
     weight: number
 }
 
-/**
- * Interface for the biology of a variety
- */
-interface Biology {
-    height?: number,
-    weight?: number
-}
-
-/**
- * Interface for the metastats of a variety
- */
-interface Meta {
-    base_experience?: number,
-    ev_yields?: string
-}
-
-/**
- * Class for processing data about a pokemon
- */
-class Pokemon {
-    name: string;
-    biology: Biology;
-    meta: Meta;
-    types: string[];
-    base_stats: {[key: string]: number};
-
-    /**
-     * Constructor for an instance of Pokemon
-     *
-     * @param {PokemonInterface} data: the raw data to process
-     * @param {()=>void} updateCallback: callback when axios request for form name returns
-     * @param {string} language: the language identifier
-     */
-    constructor(data:PokemonInterface,updateCallback:()=>void,language:string) {
-        this.name = data.name;
-        //Biology
-        this.biology = {
-            height: data.height,
-            weight: data.weight
-        };
-        //Meta
-        this.meta = {
-            base_experience: data.base_experience,
-        }
-        //Types
-        let types = data.types.slice();
-        types.sort((a,b)=>{return a.slot - b.slot;});
-        this.types = types.map(item=>item.type.name);
-        //Stats and EVs
-        this.base_stats = {};
-        let stats = data.stats.slice();
-        let evYieldsBase: string[] = [];
-        stats.forEach((item)=>{
-            this.base_stats[item.stat.name] = item.base_stat;
-            if (item.effort) {
-                evYieldsBase.push(
-                    item.effort.toString() + " "
-                        + item.stat.name.toUpperCase()
-                        + " Point"
-                        + (item.effort == 1 ? "" : "s")
-                )
-            }
-        })
-        this.meta.ev_yields = evYieldsBase.join(", ");
-        //Name
-        axios.get<{form_names:Name[]}>(data.forms[0].url).then((response)=>{
-            this.name = response.data.form_names.filter(
-                (item)=>item.language.name === language
-            )[0]?.name || this.name;
-            updateCallback();
-        })
-    }
-}
-
 export type { PokemonInterface };
-export { Pokemon };

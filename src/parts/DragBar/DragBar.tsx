@@ -1,120 +1,142 @@
 //Import from external 'react' module
 import React from 'react';
 
-//Import from external 'react-scroll' module
-import { Link } from 'react-scroll';
+//Import from external 'react-redux' module
+import { useSelector, useDispatch } from 'react-redux';
 
-//Imports from local 'utils'
-import type { ReferenceInterface } from 'utils/Reference';
+//Import from external 'react-router-dom' module
+import { useLocation, Link } from 'react-router-dom';
 
-//Imports from local 'components'
+//Import from local 'actions' directory
+import { addFavourite, removeFavourite } from 'actions/favourites';
+import { addSpeciesComparisonInfo, removeSpeciesInfoById } from 'actions/species';
+
+//Import from local 'reducers' directory
+import type { FavouritesStateInterface, SpeciesStateInterface, SidebarStateInterface, TotalStateInterface } from 'reducers';
+import type { SpeciesInfo } from 'reducers/species';
+
+//Import from local 'components' directory
 import SpeciesCard from 'components/Species';
 
 /**
- * Interface for props of the DragBar component
- */
-interface DragBarProps {
-    /**
-     * Position string for working out css classname
-     */
-    pos: string
-    /**
-     * Callback to call upon dropping a species into the drag bar
-     */
-    dropCallback: (event: React.DragEvent<HTMLDivElement>,index?:number)=>void
-    /**
-     * Callback to call upon ending a species' drag event
-     */
-    dragEndCallback: (index: number)=>void
-    /**
-     * Callback to call upon clicking the compare button
-     */
-    compareCallback: ()=>void
-    /**
-     * Array of References for species to display in card area
-     */
-    contents: ReferenceInterface[]
-    /**
-     * Array of two species References to display in
-     * comparison area
-     */
-    compare: (ReferenceInterface | undefined)[]
-}
-
-/**
- * DragBar component at right hand side of page
+ * DragBar component - aside element at right hand side of page.
  * Displays a favourites box where species cards
  * may be dragged and dropped for safe keeping
  */
-function DragBar(props: DragBarProps) {
-    return <div className={"dragBarDiv"+props.pos}>
-        <div className="dragBarFavDiv">
-            <h3 className={"dragBarTitle"+props.pos}>
+function DragBar(props: {}) {
+    const dispatch = useDispatch();
+    const favourites: FavouritesStateInterface = useSelector((state: TotalStateInterface) => state.favourites);
+    const species: SpeciesStateInterface = useSelector((state: TotalStateInterface) => state.speciesInfo);
+    const comparisonSpecies: SpeciesStateInterface = {};
+    for (const id in species) {
+        const speciesInstance = species[id] as SpeciesInfo;
+        if (speciesInstance.hasOwnProperty("comparisonIndex")) {
+            comparisonSpecies[speciesInstance.comparisonIndex] = speciesInstance;
+        }
+    }
+    const speciesOne = comparisonSpecies[1] as SpeciesInfo;
+    const speciesTwo = comparisonSpecies[2] as SpeciesInfo;
+    const classNameMod: SidebarStateInterface = useSelector((state: TotalStateInterface) => state.sidebar);
+    const location = useLocation().pathname.split("/").splice(0,3).join("/");
+    return <aside className={"drag-bar"+classNameMod} role="complementary">
+        <div className={"drag-bar__favourites-div"+classNameMod}>
+            <h3 className={"drag-bar__title"+classNameMod}>
                 Favourites
             </h3>
-            <h4 className={"dragBarTitle"+props.pos}>
+            <h4 className={"drag-bar__title"+classNameMod}>
                 Drag a Pokemon card to the area below
                 to add it to your favourites
             </h4>
             <div
-                className={"dragBarDropBox"+props.pos}
+                className={"drag-bar__favourites-div__drop-box"+classNameMod}
                 onDragOver={(event)=>{event.preventDefault();}}
-                onDrop={(event)=>{props.dropCallback(event);}}
+                onDrop={(event)=>{
+                    dispatch(
+                        addFavourite(
+                            JSON.parse(
+                                event.dataTransfer.getData("application/json")
+                            )
+                        )
+                    );
+                }}
             >
-                {props.contents.map((item,index)=>{
+                {favourites.map((item,index)=>{
                     return <SpeciesCard
-                        showGrab
-                        showInfoButton
+                        species={item}
                         key={item.name}
-                        reference={item}
+                        showInfoButton
                         dragEndCallback={(event)=>{
                             event.dataTransfer.dropEffect==="none"
-                                && props.dragEndCallback(index);
+                                && dispatch(removeFavourite(index))
                         }}
                     />
                 })}
             </div>
         </div>
-        <div className="dragBarCompeteDiv">
-            <h3 className={"dragBarTitle"+props.pos}>
+        <div className={"drag-bar__compare-div"+classNameMod}>
+            <h3 className={"drag-bar__title"+classNameMod}>
                 Compare Pokemon
             </h3>
-            <div className="dragBarCompeteInner">
+            <div className={"drag-bar__compare-div__inner"+classNameMod}>
                 <div
-                    className="dragBarCompeteSlot"
+                    className={"drag-bar__compare-div__drop-box"+classNameMod}
                     onDragOver={(event)=>{event.preventDefault();}}
-                    onDrop={(event)=>{props.dropCallback(event,0);}}
+                    onDrop={(event)=>{
+                        speciesOne && dispatch(
+                            removeSpeciesInfoById(speciesOne.species.id)
+                        );
+                        dispatch(
+                            addSpeciesComparisonInfo(
+                                JSON.parse(
+                                    event.dataTransfer.getData("application/json")
+                                ),
+                                1
+                            )
+                        );
+                    }}
                 >
-                    {props.compare[0] && <SpeciesCard
+                    {speciesOne && <SpeciesCard
+                        species={speciesOne.species}
                         flexGrow
-                        key={props.compare[0].name}
-                        reference={props.compare[0]}
-                    />
-                    }
+                    />}
                 </div>
                 VS
                 <div
-                    className="dragBarCompeteSlot"
+                    className={"drag-bar__compare-div__drop-box"+classNameMod}
                     onDragOver={(event)=>{event.preventDefault();}}
-                    onDrop={(event)=>{props.dropCallback(event,1);}}
+                    onDrop={(event)=>{
+                        speciesTwo && dispatch(
+                            removeSpeciesInfoById(speciesTwo.species.id)
+                        );
+                        dispatch(
+                            addSpeciesComparisonInfo(
+                                JSON.parse(
+                                    event.dataTransfer.getData("application/json")
+                                ),
+                                2
+                            )
+                        );
+                    }}
                 >
-                    {props.compare[1] && <SpeciesCard
+                    {speciesTwo && <SpeciesCard
+                        species={speciesTwo.species}
                         flexGrow
-                        key={props.compare[1].name}
-                        reference={props.compare[1]}
-                    />
-                    }
+                    />}
                 </div>
             </div>
-            <button
-                className="dragBarCompeteButton"
-                onClick={()=>{props.compareCallback();}}
-            >
-                Compare!
-            </button>
+            {speciesOne && speciesTwo &&
+                <Link
+                    className={"drag-bar__compare-div__compare-button"+classNameMod}
+                    to={location+"/info/"
+                        +speciesOne.species.id.toString()+"/"
+                        +speciesTwo.species.id.toString()}
+                    aria-label="Compare these pokemon"
+                >
+                    Compare!
+                </Link>
+            }
         </div>
-    </div>
+    </aside>
 }
 
-//Default export is DragBar component
 export default DragBar;

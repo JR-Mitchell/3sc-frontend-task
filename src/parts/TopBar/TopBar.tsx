@@ -1,58 +1,48 @@
 //Import from external 'react' module
 import React from 'react';
 
-//Import from external 'axios' module
-import axios from 'axios';
+//Import from external 'react-redux' module
+import { useSelector, useDispatch } from 'react-redux';
 
-//Imports from local 'utils'
-import type { GenerationInterface } from 'utils/Generation';
-import type { ReferenceInterface } from 'utils/Reference';
+//Import from local 'actions' directory
+import { toggleSidebar } from 'actions/sidebar';
 
-/**
- * Interface for props of the TopBar component
- */
-interface TopBarProps {
-    /**
-     * Position string for working out CSS classnames
-     */
-    pos: string
-    /**
-     * Callback for menu button
-     */
-    menuCallback: () => void
-    /**
-     * Callback for favourites button
-     */
-    favouritesCallback: () => void
-}
+//Import from local 'reducers' directory
+import type { SidebarStateInterface, TotalStateInterface } from 'reducers';
 
 /**
- * TopBar component at top of page
- * Contains page title and menu bar button
+ * TopBar component - header element at top of pages.
+ * Provides a main title for the page,
+ * as well as buttons for accessing the two side bars
  */
-function TopBar(props:TopBarProps) {
-    return <div className="topBarDiv">
+function TopBar(props: {}) {
+    const classNameMod: SidebarStateInterface = useSelector((state: TotalStateInterface) => state.sidebar);
+    const dispatch = useDispatch();
+    return <header className={"top-bar"+classNameMod}>
         <button
-            className="topBarMenuIcon"
-            onClick={()=>{props.menuCallback();}}
+            className={"top-bar__menu-button"+classNameMod}
+            title="Open main menu"
+            aria-label="Main menu"
+            onClick={()=>{dispatch(toggleSidebar("menu-bar"));}}
         >
-            <div className="topBarMenuIconInner" />
-            <div className="topBarMenuIconInner" />
-            <div className="topBarMenuIconInner" />
+            <div className={"top-bar__menu-button__inner"+classNameMod} />
+            <div className={"top-bar__menu-button__inner"+classNameMod} />
+            <div className={"top-bar__menu-button__inner"+classNameMod} />
         </button>
-        <h1 className="topBarTitle">
+        <h1 className={"top-bar__title"+classNameMod}>
             PokeAPI Web UI
         </h1>
         <button
-            className="topBarMenuIcon"
-            onClick={()=>{props.favouritesCallback();}}
+            className={"top-bar__menu-button"+classNameMod}
+            title="Open side bar"
+            aria-label="Favourites and comparison side bar"
+            onClick={()=>{dispatch(toggleSidebar("drag-bar"));}}
         >
-            <div className={"topBarFavesIconTop"+props.pos} />
-            <div className={"topBarFavesIconBottom"+props.pos} />
-            <div className="topBarFavesIconCentre" />
+            <div className={"top-bar__dragbar-button__top"+classNameMod} />
+            <div className={"top-bar__dragbar-button__bottom"+classNameMod} />
+            <div className={"top-bar__dragbar-button__middle"+classNameMod} />
         </button>
-    </div>
+    </header>
 }
 
-//Default export is TopBar component
 export default TopBar;

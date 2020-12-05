@@ -5,7 +5,7 @@ import axios from 'axios';
 import type { ReferenceInterface as Reference } from './Reference';
 import type { SpritesInterface as Sprites } from './Sprites';
 import type { PokemonInterface } from './Pokemon';
-import { Pokemon } from './Pokemon';
+//import type { EvolutionInterface } from './Evolution';
 
 /**
  * Interface for the entry on a local game dex
@@ -99,181 +99,13 @@ interface SpeciesInterface {
     varieties: Variety[]
 }
 
-/**
- * Interface for the biology of a species
- */
-interface Biology {
-    genus?: Genus,
-    male_percent: number,
-    female_percent: number,
-    genderless_percent: number,
-    hatch_time_min?: number,
-    hatch_time_max?: number,
-    height?: number | {[key:string]: number},
-    weight?: number | {[key:string]: number},
-    habitat?: Reference,
-}
-
-/**
- * Interface for the metastats of a species
- */
-interface Meta {
-    capture_rate?: number,
-    base_happiness?: number,
-    growth_rate?: string,
-    base_experience?: number | {[key: string]: number},
-    ev_yields?: string | {[key: string]: string}
-}
-
-
-/**
- * Class for processing data about a species
- */
-class Species {
-    biology: Biology;
-    meta: Meta;
-    varieties: {[name:string]: Pokemon};
-    languageCode: string;
-    updateCallback: ()=>void;
-    name: string;
-
-    /**
-     * Constructor for an instance of Species
-     *
-     * @param {SpeciesInterface} data: the raw data to process
-     * @param {()=>void} updateCallback: callback when axios request returns
-     * @param {string, Optional} language: the language identifier,
-     *      defaults to "en"
-     */
-    constructor(data:SpeciesInterface,updateCallback:()=>void,language?:string) {
-        this.updateCallback = ()=>{updateCallback();}
-        //Default language is english
-        this.languageCode = language || "en";
-        this.name = data.names
-            ?.filter((item)=>{
-                return item.language.name === this.languageCode
-            })[0]?.name || data.name;
-        const hasGender = data.gender_rate && data.gender_rate !== -1;
-        //Biology
-        this.biology = {
-            genus: data.genera
-                ?.filter((item)=>item.language.name === this.languageCode)[0],
-            male_percent: hasGender ? 1-(0.125*data.gender_rate) : 0,
-            female_percent: hasGender ? 0.125*data.gender_rate : 0,
-            genderless_percent: hasGender ? 0 : 1,
-            hatch_time_min: 257*data.hatch_counter,
-            hatch_time_max: (257*(data.hatch_counter+1))-1,
-        };
-        //Meta
-        this.meta = {
-            capture_rate: data.capture_rate,
-            base_happiness: data.base_happiness,
-            growth_rate: data.growth_rate?.name
-        };
-        //Get varieties
-        this.varieties = {};
-        for (let i=0; i<data.varieties.length; i++) {
-            const url = data.varieties[i].pokemon.url;
-            axios.get<PokemonInterface>(url).then((response)=>{
-                this.addVariety(response.data);
-            })
-        }
-    }
-
-    /**
-     * Method to call upon completion of fetching a pokemon variety
-     */
-    addVariety(data: PokemonInterface) {
-        let pokemon = new Pokemon(
-            data,
-            ()=>{this.update();},
-            this.languageCode
-        );
-        this.varieties[pokemon.name] = pokemon;
-        this.update();
-    }
-
-    /**
-     * Updates all information from pokemon varieties
-     */
-    update() {
-        let newVarieties: {[name:string]: Pokemon} = {};
-        //Heights
-        let heights: {[key:string]: number} = {};
-        let spreadHeights: {[key: number]: string[]} = {};
-        //Weights
-        let weights: {[key:string]: number} = {};
-        let spreadWeights: {[key: number]: string[]} = {};
-        //Base exp
-        let exps: {[key:string]: number} = {};
-        let spreadExp: {[key: number]: string[]} = {};
-        //EV yields
-        let evs: {[key:string]: string} = {};
-        let spreadEvs: {[key: string]: string[]} = {};
-        for (const name in this.varieties) {
-            let newName = this.varieties[name].name;
-            newVarieties[newName] = this.varieties[name];
-            //Heights
-            let height = this.varieties[name].biology.height;
-            if (spreadHeights.hasOwnProperty(height)) {
-                spreadHeights[height].push(newName);
-            } else {
-                spreadHeights[height] = [newName];
-            }
-            heights[newName] = height;
-            //Weights
-            let weight = this.varieties[name].biology.weight;
-            if (spreadWeights.hasOwnProperty(weight)) {
-                spreadWeights[weight].push(newName);
-            } else {
-                spreadWeights[weight] = [newName];
-            }
-            weights[newName] = weight;
-            //Base exp
-            let exp = this.varieties[name].meta.base_experience;
-            if (spreadExp.hasOwnProperty(exp)) {
-                spreadExp[exp].push(newName);
-            } else {
-                spreadExp[exp] = [newName];
-            }
-            exps[newName] = exp;
-            //EV yields
-            let ev = this.varieties[name].meta.ev_yields;
-            if (spreadEvs.hasOwnProperty(ev)) {
-                spreadEvs[ev].push(newName);
-            } else {
-                spreadEvs[ev] = [newName];
-            }
-            evs[newName] = ev;
-        }
-        //Heights
-        if (Object.keys(spreadHeights).length == 1) {
-            this.biology.height = Number(Object.keys(spreadHeights)[0]);
-        } else {
-            this.biology.height = {...heights};
-        }
-        //Weights
-        if (Object.keys(spreadWeights).length == 1) {
-            this.biology.weight = Number(Object.keys(spreadWeights)[0]);
-        } else {
-            this.biology.weight = {...weights};
-        }
-        //Base exp
-        if (Object.keys(spreadExp).length == 1) {
-            this.meta.base_experience = Number(Object.keys(spreadExp)[0]);
-        } else {
-            this.meta.base_experience = {...exps};
-        }
-        //EV yields
-        if (Object.keys(spreadEvs).length == 1) {
-            this.meta.ev_yields = Object.keys(spreadEvs)[0];
-        } else {
-            this.meta.ev_yields = {...evs};
-        }
-        this.varieties = {...newVarieties};
-        this.updateCallback();
+function getLocalisedGenus(item: SpeciesInterface, localCode: string) {
+    let filtered = item.genera?.filter(result=>result.language.name === localCode) || [];
+    if (filtered.length > 0) {
+        return filtered[0].genus;
     }
 }
 
-export type { SpeciesInterface, Biology, Meta };
-export { Species }
+export default getLocalisedGenus;
+
+export type { SpeciesInterface };

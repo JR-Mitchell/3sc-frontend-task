@@ -3,50 +3,41 @@ body {
     margin: 0px;
 }
 
-/** Main Body **/
-.mainBody {
-    float:left;
-    width: 100%;
-    transition: width 1s, margin-left 1s;
-}
-
-.mainBody.right {
-    width: 76%;
-}
-
-.mainBody.left {
-    width: 76%;
-    margin-left: 24%
-}
-
-.mainBody.left.right {
-    width: 52%;
-    margin-left: 24%;
-}
-
-/** Top bar **/
-.topBarDiv {
+/** Top bar */
+.top-bar {
     background-color: #adec39;
+    position: sticky;
     margin: 0px 0px 20px 0px;
     padding: 20px;
     box-shadow: 0px 10px 5px grey;
     display: flex;
+    width: calc(100% - 40px);
+    transition: width 1s, margin-left 1s;
+}
+    
+.top-bar.menu-bar-open {
+    width: calc(76% - 40px);
+    margin-left: 24%;
 }
 
-.topBarTitle {
-    flex-grow: 1;
-    text-align: center;
+.top-bar.drag-bar-open {
+    width: calc(76% - 40px);
 }
 
-.topBarMenuIcon {
+.top-bar.menu-bar-open.drag-bar-open {
+    width: calc(52% - 40px);
+    margin-left: 24%;
+}
+
+.top-bar__menu-button {
     width: 40px;
     height: 40px;
     border-radius: 20px;
-    margin-right: 20px;
+    margin: 20px;
     background-color: black;
 }
 
-.topBarMenuIconInner {
+.top-bar__menu-button__inner {
     width: 0px;
     height: 0px;
     padding: 2px 10px 2px 10px;
@@ -54,7 +45,7 @@ body {
     background-color: #adec39;
 }
 
-.topBarFavesIconTop {
+.top-bar__dragbar-button__top {
     background-color: red;
     width: 40px;
     height: 20px;
@@ -66,36 +57,39 @@ body {
     transition: top 1s, height 1s, border-radius 1s;
 }
 
-.topBarFavesIconTop.right {
-    top: -3px;
+.top-bar__dragbar-button__top.drag-bar-open {
     height: 19px;
     border-top-left-radius: 19px;
     border-top-right-radius: 19px;
 }
 
-.topBarFavesIconBottom {
+
+.top-bar__dragbar-button__bottom {
     background-color: white;
     width: 40px;
     height: 20px;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: #cccccc;
     position: relative;
     top: -1px;
     left: -7.5px;
     transition: top 1s, height 1s, border-radius 1s;
 }
 
-.topBarFavesIconBottom.right {
+.top-bar__dragbar-button__bottom.drag-bar-open {
     top: 3px;
     height: 17px;
     border-bottom-left-radius: 17px;
     border-bottom-right-radius: 17px;
 }
 
-.topBarFavesIconCentre {
+.top-bar__dragbar-button__middle {
     background-color: white;
     position: relative;
-    top: -28px;
+    top: -29px;
     left: 7px;
     width: 6px;
     height: 6px;
@@ -105,8 +99,100 @@ body {
     border-width: 3px;
 }
 
-/** Right hand dragbar **/
-.dragBarDiv {
+.top-bar__title {
+    flex-grow: 8;
+    text-align: center;
+}
+
+/** Left side menubar */
+.menu-bar {
+    background-color: grey;
+    float: left;
+    width: 0%;
+    height: 100%;
+    position: fixed;
+    transition: width 1s, margin-left 1s;
+    overflow-y: scroll;
+}
+
+.menu-bar.menu-bar-open {
+    width: 24%;
+}
+
+.menu-bar__title {
+    overflow: hidden;
+    text-overflow: clip;
+    width: 80%;
+    margin: 2% 10% 2% 10%;
+    white-space: nowrap;
+}
+
+.menu-bar__title.menu-bar-open {
+    white-space: normal;
+    text-align: center;
+}
+
+.menu-bar__category-button {
+    background-color: #adec39;
+    border-left-color: #89ba2d;
+    border-top-color: #89ba2d;
+    border-right-color: #638720;
+    border-bottom-color: #638720;
+    border-radius: 5px;
+    padding: 0px;
+    border-width: 0px;
+    margin: 2% 10% 2% 10%;
+    width: 80%;
+    overflow: hidden;
+    text-overflow: clip;
+    transition: border-width 0s, padding 0s;
+    transition-delay: 0.5s;
+    appearance: button;
+    text-align: center;
+    border-style: outset;
+    color: black;
+    font: 400 13.3333px Arial;
+    text-decoration: none;
+}
+
+.menu-bar__category-button.menu-bar-open {
+    padding: 1px 6px;
+    border-width: 2px;
+    transition-delay: 0s;
+}
+
+.menu-bar__category-contents {
+    background-color: white;
+    margin: 2% 10% 2% 10%;
+    width: 80%;
+    border-radius: 2px;
+    list-style-type: none;
+    padding: 0px;
+}
+
+.menu-bar__category-contents__scroll-button {
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    text-overflow: clip;
+    border-color: black;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+}
+
+.menu-bar__category-contents__scroll-button.menu-bar-open:hover {
+    background-color: #e6f9c3;
+}
+
+.menu-bar__category-contents__scroll-button.active.menu-bar-open {
+    border-width: 0px 0px 1px 2px;
+    font-weight: bold;
+    background-color: #d3f494;
+}
+
+
+/** Right side dragbar */
+.drag-bar {
     right: 0;
     width: 0%;
     height: 100vh;
@@ -117,11 +203,11 @@ body {
     flex-direction: column;
 }
 
-.dragBarDiv.right {
+.drag-bar.drag-bar-open {
     width: 24%;
 }
 
-.dragBarFavDiv {
+.drag-bar__favourites-div {
     background-color: #f05151;
     width: 100%;
     display: flex;
@@ -129,7 +215,7 @@ body {
     flex-grow: 1;
 }
 
-.dragBarDropBox {
+.drag-bar__favourites-div__drop-box {
     background-color: white;
     width: 90%;
     flex-grow: 1;
@@ -143,36 +229,7 @@ body {
     border-radius: 5px;
 }
 
-.dragBarCompeteDiv {
-    background-color: #dddddd;
-    width: 100%;
-    flex-grow: 0;
-}
-
-.dragBarCompeteInner {
-    width: 90%;
-    margin: 5%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.dragBarCompeteSlot {
-    height: 135px;
-    margin: 8px;
-    flex: 1;
-    background-color: white;
-    border-radius: 5px;
-    display: flex;
-}
-
-.dragBarCompeteButton {
-    width: 80%;
-    margin: 2% 10% 6% 10%;
-    background-color: #f05151;    
-}
-
-.dragBarTitle {
+.drag-bar__title {
     overflow: hidden;
     text-overflow: clip;
     width: 80%;
@@ -181,151 +238,85 @@ body {
     flex-shrink: 0;
 }
 
-.dragBarTitle.right {
+.drag-bar__title.drag-bar-open {
     white-space: normal;
     text-align: center;
 }
 
-/** Left hand menubar **/
-.menuBarDiv {
-    background-color: grey;
-    float:left;
-    width: 0%;
-    height: 100vh;
-    position: fixed;
+.drag-bar__compare-div {
+    background-color: #cccccc;
+    width: 100%;
+    flex-grow: 0;
+}
+
+.drag-bar__compare-div__inner {
+    width: 90%;
+    margin: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.drag-bar__compare-div__drop-box {
+    height: 135px;
+    margin: 8px;
+    flex: 1;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+}
+
+.drag-bar__compare-div__compare-button {
+    width: 80%;
+    margin: 2% 10% 6% 10%;
+    background-color: #f05151;
+    appearance: button;
+    text-align: center;
+    border-style: outset;
+    color: black;
+    font: 400 13.3333px Arial;
+    text-decoration: none;
+    border-left-color: #bb0000;
+    border-top-color: #bb0000;
+    border-right-color: #660000;
+    border-bottom-color: #660000;
+    border-radius: 5px;
+}
+
+/** Pokemon List */
+.poke-list {
+    width: 100%;
+    padding: 0px 24px 0px 24px;
     transition: width 1s, margin-left 1s;
 }
 
-.menuBarDiv.left {
-    width: 24%;
+.poke-list.menu-bar-open {
+    width: 76%;
+    margin-left: 24%;
 }
 
-.menuBarContents {
-    background-color: white;
-    margin: 2% 10% 2% 10%;
-    width: 80%;
-    border-radius: 2px;
+.poke-list.drag-bar-open {
+    width: 76%;
 }
 
-.menuBarLink {
+.poke-list.menu-bar-open.drag-bar-open {
+    width: 52%;
+    margin-left: 24%;
+}
+
+.poke-list__bin-title {
+    margin: 0px;
+    padding: 18px 0px 18px 0px;
     width: 100%;
-    display: block;
-    overflow: hidden;
-    text-overflow: clip;
-    cursor: pointer;
-    border-color: black;
-    border-style: solid;
-    border-width: 0px 0px 1px 0px;
 }
 
-.menuBarLink.left:hover {
-    background-color: #e6f9c3;
-}
-
-.menuBarLink.active.left {
-    border-width: 0px 0px 1px 2px;
-    font-weight: bold;
-    background-color: #d3f494;
-}
-
-.menuBarGenButton {
-    background-color: #adec39;
-    border-left-color: #89ba2d; 
-    border-top-color: #89ba2d; 
-    border-right-color: #638720;
-    border-bottom-color: #638720;
-    border-radius: 5px;
-    padding: 0px;
-    border-width: 0px;
-    margin: 2% 10% 2% 10%;
-    width: 80%;
-    overflow: hidden;
-    text-overflow: clip;
-    transition: border-width 0s, padding 0s;
-    transition-delay: 0.5s;
-}
-
-.menuBarGenButton.left {
-    padding: 1px 6px;
-    border-width: 2px;
-    transition-delay: 0s;
-}
-
-.menuBarTitle {
-    overflow: hidden;
-    text-overflow: clip;
-    width: 80%;
-    margin: 2% 10% 2% 10%;
-    white-space: nowrap;
-}
-
-.menuBarTitle.left {
-    white-space: normal;
-    text-align: center;
-}
-
-/** Overlay **/
-.overlayOuter {
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    z-index: 1;
+.poke-list__bin-container {
     width: 100%;
-    height: 100%;
+    overflow: hidden;
 }
 
-.overlayInner {
-    position: fixed;
-    left: 10%;
-    top: 10%;
-    z-index: 2;
-    width: 80%;
-    height: 80%;
-    background-color: white;
-    box-shadow: 0px 0px 50px 50px rgba(0,0,0,0.8);
-    border-left-color: #89ba2d; 
-    border-top-color: #89ba2d; 
-    border-right-color: #638720;
-    border-bottom-color: #638720;
-    border-radius: 5px;
-    border-style: solid;
-    padding: 12px;
-}
-
-.overlayCloseButton {
-    position: fixed;
-    left: calc(90vw + 5px);
-    top: calc(10% - 10px);
-    z-index: 3;
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
-    background-color: red;
-    border-left-color: #bb0000;
-    border-top-color: #bb0000;
-}
-
-.overlayCloseButtonCross {
-    position: absolute;
-    top: 1px;
-    left: 7.25px;
-    width: 2px;
-    height: 14px;
-    z-index: 4;
-    background-color: black;
-    opacity: 0.7;
-}
-
-.overlayCloseButtonCross.first {
-    transform: rotate(45deg);
-}
-
-.overlayCloseButtonCross.second {
-    transform: rotate(-45deg);
-}
-
-/** Species card **/
-.speciesCard {
+/** Species Card */
+.species-card {
     float: left;
     margin: 6px;
     padding: 6px;
@@ -339,81 +330,186 @@ body {
     background-color: white;
 }
 
-.speciesCard.grab {
-    margin-left: -4px;
-    margin-right: -4px;
+.cell-species-card {
+    margin: 6px;
+    padding: 6px;
+    border: 2px;
+    border-left-color: #89ba2d;
+    border-top-color: #89ba2d;
+    border-right-color: #638720;
+    border-bottom-color: #638720;
+    border-radius: 5px;
+    border-style: solid;
+    background-color: white;
+    vertical-align: top;
 }
 
-.speciesCard.grow {
+.species-card.fill {
+    width: calc(100% - 24px);
+}
+
+.species-card.grow {
     margin: 0px;
     flex-grow: 1;
 }
 
-.speciesTitle {
+.species-card__title {
     margin: 0px 6px 0px 0px;
     float: left;
 }
 
-.speciesDetailsTitle {
-    margin: 6px;
-    width: 100%;
-}
-
-.speciesInfo {
-    margin: 6px;
-}
-
-.speciesMoreButton {
-    border-radius: 5px;
-    padding: auto;
-}
-
-.speciesGrabIcon {
-    width: 20px;
-    height: 20px;
-    float: right;
-}
-
-.speciesGrabIconContainer {
-    height: 20px;
+.species-card__title.grey {
+    margin: 0px 0px 0px 0px;
     padding: 6px;
     background-color: #cccccc;
     border-radius: 6px;
 }
 
-.speciesGrabIconContainer.grab {
-    padding-left: 16px;
-    padding-right: 16px;
-}
-
-/** Species List **/
-.speciesListTitle {
-    width: 100%;
-    padding: 12px;
-    text-align: center;
-}
-
-.speciesListAlphaTitle {
-    width: 100%;
-    padding: 12px;
-}
-
-.speciesListAlphaDiv {
-    overflow: hidden;
-}
-
-/** Msic **/
-
-.flex {
-    display: flex;
-}
-
-.spritePlaceholder {
+.species-card__sprite {
     width: 68px;
     height: 56px;
 }
 
-.typeIcon {
+.species-card__info-button {
+    background-color: #efefef;
+    border-left-color: #858585;
+    border-top-color: #858585;
+    border-right-color: #767676;
+    border-bottom-color: #767676;
+    border-radius: 5px;
+    padding: 2px;
+    border-width: 2px;
+    text-overflow: clip;
+    transition: border-width 0s, padding 0s;
+    transition-delay: 0.5s;
+    appearance: button;
+    text-align: center;
+    border-style: outset;
+    color: black;
+    font: 400 13.3333px Arial;
+    text-decoration: none;
+}
+
+/** Overlay */
+.info-overlay {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.info-overlay__outer {
+    position: fixed;
+    left: 10%;
+    top: 10%;
+    z-index: 2;
+    width: 80%;
+    height: 80%;
+    background-color: white;
+    box-shadow: 0px 0px 50px 50px rgba(0,0,0,0.8);
+    border-left-color: #89ba2d;
+    border-top-color: #89ba2d;
+    border-right-color: #638720;
+    border-bottom-color: #638720;
+    border-radius: 5px;
+    border-style: solid;
+    padding: 12px;
+}
+
+.info-overlay__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    align-content: stretch;
+    justify-content: space-evenly;
+    height: calc(100% - 40px);
+    overflow: scroll;
+}
+
+.info-overlay__title {
+    margin: 6px;
+    width: 100%;
+}
+
+.info-overlay__details-group {
+    margin: 6px;
+    background-color: #d3f494;
+    border-radius: 8px;
+    border-color: grey;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.info-overlay__details-group__title {
+    margin: 6px;
+    width: 100%;
+}
+
+.info-overlay__details-group__table {
+    margin: 6px;
+    border-color: grey;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.info-overlay__details-group__table-cell {
+    padding: 6px;
+    text-align: left;
+    border-color: grey;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.info-overlay__close-button {
+    position: fixed;
+    left: calc(90vw + 5px);
+    top: calc(10% - 10px);
+    z-index: 3;
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    border-style: outset;
+    background-color: red;
+    border-left-color: #bb0000;
+    border-top-color: #bb0000;
+}
+
+.info-overlay__close-button__cross {
+    position: absolute;
+    top: 3px;
+    left: 9.25px;
+    width: 2px;
+    height: 14px;
+    z-index: 4;
+    background-color: black;
+    opacity: 0.7;
+}
+
+.info-overlay__close-button__cross.first-cross {
+    transform: rotate(45deg);
+}
+
+.info-overlay__close-button__cross.second-cross {
+    transform: rotate(-45deg);
+}
+
+/** Color helpers for table comparison **/
+.red {
+    background-color: #f05151;
+}
+
+.yellow {
+    background-color: #f1f494;
+}
+
+.green {
+    background-color: #adec39;
+}
+
+/* Colour helpers for types */
+.type-icon {
     color: white;
     padding: 1px;
     border: 2px;
@@ -422,98 +518,97 @@ body {
     text-align: center;
 }
 
-/* Colour helpers for types */
-.typeColourNormal {
+.type-colour.normal {
     background-color: #a8a878;
     border-color: #6d6d4e;
 }
 
-.typeColourFire {
+.type-colour.fire {
     background-color: #f08030;
     border-color: #9c531f;
 }
 
-.typeColourFighting {
+.type-colour.fighting {
     background-color: #c03028;
     border-color: #7d1f1a;
 }
 
-.typeColourWater {
+.type-colour.water {
     background-color: #6890f0;
     border-color: #445e9c;
 }
 
-.typeColourFlying {
+.type-colour.flying {
     background-color: #a890f0;
     border-color: #6d5e9c;
 }
 
-.typeColourGrass {
+.type-colour.grass {
     background-color: #78c850;
     border-color: #4e8234;
 }
 
-.typeColourPoison {
+.type-colour.poison {
     background-color: #a040a0;
     border-color: #682a68;
 }
 
-.typeColourElectric {
+.type-colour.electric {
     background-color: #f8d830;
     border-color: #a1871f;
 }
 
-.typeColourGround {
+.type-colour.ground {
     background-color: #a8a878;
     border-color: #6d6d4e;
 }
 
-.typeColourPsychic {
+.type-colour.psychic {
     background-color: #f85888;
     border-color: #a13959;
 }
 
-.typeColourRock {
+.type-colour.rock {
     background-color: #b8a038;
     border-color: #786824;
 }
 
-.typeColourIce {
+.type-colour.ice {
     background-color: #98d8d8;
     border-color: #638d8d;
 }
 
-.typeColourBug {
+.type-colour.bug {
     background-color: #a8b820;
     border-color: #6d7815;
 }
 
-.typeColourDragon {
+.type-colour.dragon {
     background-color: #7038f8;
     border-color: #4924a1;
 }
 
-.typeColourGhost {
+.type-colour.ghost {
     background-color: #705898;
     border-color: #493963;
 }
 
-.typeColourDark {
+.type-colour.dark {
     background-color: #705848;
     border-color: #49392f;
 }
 
-.typeColourSteel {
+.type-colour.steel {
     background-color: #b8b8d0;
     border-color: #787887;
 }
 
-.typeColourFairy {
+.type-colour.fairy {
     background-color: #ee99ac;
     border-color: #9B6470;
 }
 
-.typeColourUnknown {
+.type-colour.unknown {
     background-color: #68a090;
     border-color: #44685e;
 }
